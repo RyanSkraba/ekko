@@ -55,8 +55,8 @@ function ekko_help() {
   local __second=$1; shift
   local __third=$1; shift # optional'
   ekko b "" $'  [ -z "$__third" ] && __third=ThirdArgumentDefaultValue
-  ekko arg_not_null __first "FirstArgumentExampleValue" \
-      && ekko arg_not_null __second "SecondArgumentExampleValue" \
+  ekko env_not_null __first "FirstArgumentExampleValue" \
+      && ekko env_not_null __second "SecondArgumentExampleValue" \
       || return $?'
   ekko ok $'  # At this point, the argument testing succeeded.'
   echo
@@ -66,8 +66,8 @@ function ekko_help() {
 # Prints out pretty messages.  See ekko_help for usage.
 function ekko() {
   local __all="$@"
-  local __type=$1; shift
-  case $__type in
+  local __marker=$1; shift
+  case $__marker in
     msg)
       __ekko_base_hilite_first "\e[1m\e[36m" "\e[22m" "$@"
       ;;
@@ -102,9 +102,9 @@ function ekko() {
       __ekko_base_kv 30 "\e[95m" "\e[39m" "$@"
       ;;
     kv_*)
-      __ekko_base_kv ${__type:3} "\e[95m" "\e[39m" "$@"
+      __ekko_base_kv ${__marker:3} "\e[95m" "\e[39m" "$@"
       ;;
-    arg_not_null)
+    env_not_null)
       local __var="$1"; shift
       local __var_ex="$1"; shift
       local __var_value=$(eval echo \$$__var)
@@ -171,7 +171,7 @@ function __ekko_base_kv() {
 }
 
 function __ekko_base_banner() {
-  local __type=$1; shift
+  local __marker=$1; shift
   local __first=$1; shift
   local __rest="$@"
 
@@ -184,10 +184,10 @@ function __ekko_base_banner() {
   for each in $(seq 1 $__length); do __line=$__line$__char; done
 
   if [[ -z $__first && ! -z $__first ]]; then
-    ekko $__type "" "$__rest $__line"
+    ekko $__marker "" "$__rest $__line"
   elif [[ -z $__rest ]]; then
-    ekko $__type "$__first" $__line
+    ekko $__marker "$__first" $__line
   else
-    ekko $__type "$__first" "$__rest $__line"
+    ekko $__marker "$__first" "$__rest $__line"
   fi
 }
