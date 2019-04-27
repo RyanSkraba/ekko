@@ -8,6 +8,10 @@
 # ok: green
 # kv: purple (key) and white (value)
 #
+# The following snippet aliases ekko to echo when this script isn't sourced:
+#
+# type -t ekko > /dev/null || alias ekko=echo
+#
 #----------------------------------------------------------------------------
 
 # Set to the last execution time for a command with `ekko exec`
