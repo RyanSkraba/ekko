@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 #############################################################################
 # Helpful script for echoing with colour in bash.
 #
@@ -42,20 +43,20 @@ function ekko_help() {
 
   echo
   ekko banner_msg "Execution."
-  ekko b $'ekko no-exec ls -d $HOME/Do*' "# Print only."
-  ekko no-exec ls -d $HOME/Do*
-  ekko b $'ekko exec ls -d $HOME/Do*' "# Execute and timing."
-  ekko exec ls -d $HOME/Do*
+  ekko b $'ekko no-exec ls -d "$HOME"/Do*' "# Print only."
+  ekko no-exec ls -d "$HOME"/Do*
+  ekko b $'ekko exec ls -d "$HOME"/Do*' "# Execute and timing."
+  ekko exec ls -d "$HOME"/Do*
   ekko export EKKO_LAST_EXEC_TIME
 
   echo
   ekko banner_msg "Reading arguments"
   ekko ok $'  # Read the arguments from the command line'
-  ekko b $'  local __first=$1; shift
+  ekko b "" $'  local __first=$1; shift
   local __second=$1; shift
-  local __third=$1; shift # optional'
-  ekko b "" $'  [ -z "$__third" ] && __third=ThirdArgumentDefaultValue
-  ekko env_not_null __first "FirstArgumentExampleValue" \
+  local __third=$1; shift # optional
+  [ -z "$__third" ] && __third=ThirdArgumentDefaultValue'
+  ekko b $'  ekko env_not_null __first "FirstArgumentExampleValue" \
       && ekko env_not_null __second "SecondArgumentExampleValue" \
       || return $?'
   ekko ok $'  # At this point, the argument testing succeeded.'
@@ -65,7 +66,7 @@ function ekko_help() {
 #----------------------------------------------------------------------------
 # Prints out pretty messages.  See ekko_help for usage.
 function ekko() {
-  local __all="$@"
+  local __all="$*"
   local __marker=$1; shift
   case $__marker in
     msg)
@@ -102,38 +103,41 @@ function ekko() {
       __ekko_base_kv 30 "\e[95m" "\e[39m" "$@"
       ;;
     kv_*)
-      __ekko_base_kv ${__marker:3} "\e[95m" "\e[39m" "$@"
+      __ekko_base_kv "${__marker:3}" "\e[95m" "\e[39m" "$@"
       ;;
     env_not_null)
       local __var="$1"; shift
       local __var_ex="$1"; shift
-      local __var_value=$(eval echo \$$__var)
+      local __var_value
+      __var_value=$(eval echo \$"$__var")
       [ -z "$__var_value" ] && ekko error "Missing argument:" "<$__var> (e.g. $__var_ex)" && return 1
       return 0
       ;;
     export)
       local __env_var="$1"; shift
-      local __env_val="$@"
-      [ -z "$__env_val" ] && __env_val=$(eval echo \$$__env_var)
+      local __env_val="$*"
+      [ -z "$__env_val" ] && __env_val=$(eval echo \$"$__env_var")
       echo -e "\e[37mexport \e[1m\e[95m${__env_var}\e[22m\e[37m=\e[1m\e[36m${__env_val}\e[0m"
       ;;
     exec)
       # Print and execute the specified command, optionally storing the time.
-      echo -e "\e[100m$@\e[0m"
+      echo -e "\e[100m$*\e[0m"
       # ms, remove the 3 for nanoseconds
-      local __start=$(date +%s%3N)
-      eval $'bash -c "'$@'"'
+      local __start
+      __start=$(date +%s%3N)
+      eval $'bash -c "'"$*"'"'
       local __return=$?
-      local __time=$(( $(date +%s%3N) - $__start ))
+      local __time
+      __time=$(( $(date +%s%3N) - __start ))
       local __formatted=
       printf -v __formatted "%02d:%02d:%02d.%03d" $((__time/3600000)) $(((__time/60000)%60000)) $(((__time%60000)/1000)) $((__time%1000))
-      ekko kv_4 TIME $__time \($__formatted\) $@
+      ekko kv_4 TIME $__time \($__formatted\) "$@"
       export EKKO_LAST_EXEC_TIME=$__time
       return $__return
       ;;
     no-exec)
       # Like exec but without actually executing.
-      echo -e "\e[100m$@\e[0m"
+      echo -e "\e[100m$*\e[0m"
       export EKKO_LAST_EXEC_TIME=0
       ;;
     *)
@@ -149,10 +153,10 @@ function __ekko_base_hilite_first() {
   local __first_code=$1; shift
   local __rest_code=$1; shift
   local __first=$1; shift
-  local __rest="$@"
-  if [[ -z $__first && ! -z $__rest ]]; then
+  local __rest="$*"
+  if [[ -z "$__first" && -n "$__rest" ]]; then
     echo -e "${__first_code}${__rest_code}${__rest}\e[0m"
-  elif [[ -z $__rest ]]; then
+  elif [[ -z "$__rest" ]]; then
     echo -e "${__first_code}${__first}\e[0m"
   else
     echo -e "${__first_code}$__first${__rest_code}" "${__rest}\e[0m"
@@ -166,28 +170,27 @@ function __ekko_base_kv() {
   local __rest=$1; shift
   # If the key is "", then just indent to the values.
   [ -z "$__rest" ] \
-      && printf "${__key_code}%*s  ${__value_code}$*\e[0m\n" $__width "$__rest" \
-      || printf "${__key_code}%*s: ${__value_code}$*\e[0m\n" $__width "$__rest"
+      && printf "${__key_code}%*s  ${__value_code}$*\e[0m\n" "$__width" "$__rest" \
+      || printf "${__key_code}%*s: ${__value_code}$*\e[0m\n" "$__width" "$__rest"
 }
 
 function __ekko_base_banner() {
   local __marker=$1; shift
   local __first=$1; shift
-  local __rest="$@"
+  local __rest="$*"
 
-  local __length=$(expr $(tput cols) - ${#__first} - ${#__rest})
-  [[ ! -z $__first ]] && __length=$(expr $__length - 1)
-  [[ ! -z $__rest ]] && __length=$(expr $__length - 1)
+  local __length=$(( $(tput cols) - ${#__first} - ${#__rest}))
+  [[ -n "$__first" ]] && __length=$((__length - 1))
+  [[ -n "$__rest" ]] && __length=$((__length - 1))
 
-  local __line=
-  local __char=-
-  for each in $(seq 1 $__length); do __line=$__line$__char; done
+  local __line
+  __line=$(printf "%${__length}s" | tr ' ' '-')
 
-  if [[ -z $__first && ! -z $__first ]]; then
-    ekko $__marker "" "$__rest $__line"
+  if [[ -z $__first && -n $__first ]]; then
+    ekko "$__marker" "" "$__rest $__line"
   elif [[ -z $__rest ]]; then
-    ekko $__marker "$__first" $__line
+    ekko "$__marker" "$__first" "$__line"
   else
-    ekko $__marker "$__first" "$__rest $__line"
+    ekko "$__marker" "$__first" "$__rest $__line"
   fi
 }
