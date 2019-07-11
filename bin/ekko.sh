@@ -136,13 +136,17 @@ function ekko() {
       local __formatted=
       printf -v __formatted "%02d:%02d:%02d.%03d" $((__time/3600000)) $(((__time/60000)%60000)) $(((__time%60000)/1000)) $((__time%1000))
       ekko kv_4 TIME $__time \($__formatted\) "$@"
+      export EKKO_LAST_EXEC_START=$__start
       export EKKO_LAST_EXEC_TIME=$__time
+      export EKKO_LAST_EXEC_CMD=$*
       return $__return
       ;;
     no-exec)
       # Like exec but without actually executing.
       echo -e "\e[100m$*\e[0m"
+      export EKKO_LAST_EXEC_START=$(date +%s%3N)
       export EKKO_LAST_EXEC_TIME=0
+      export EKKO_LAST_EXEC_CMD=$*
       ;;
     *)
       echo "$__all"
