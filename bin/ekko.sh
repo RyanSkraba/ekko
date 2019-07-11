@@ -14,8 +14,12 @@
 #
 #----------------------------------------------------------------------------
 
-# Set to the last execution time for a command with `ekko exec`
+# When `ekko exec` is used, sets the start time (unix epoch in ms), the wall
+# time (in ms) and the last command run.
+
+export EKKO_LAST_EXEC_START=0
 export EKKO_LAST_EXEC_TIME=0
+export EKKO_LAST_EXEC_CMD=0
 
 #----------------------------------------------------------------------------
 # Help for the functions in this script.
@@ -65,6 +69,15 @@ function ekko_help() {
       || return $?'
   ekko ok $'  # At this point, the argument testing succeeded.'
   echo
+}
+
+#----------------------------------------------------------------------------
+# Called after any `ekko exec` call.
+function ekko_exec_after() {
+  # # Persist times to a file.
+  # echo "$@;$EKKO_LAST_EXEC_START;$EKKO_LAST_EXEC_TIME;$EKKO_LAST_EXEC_CMD" \
+  #     >> ~/.ekko-exec.log
+  true
 }
 
 #----------------------------------------------------------------------------
@@ -139,12 +152,14 @@ function ekko() {
       export EKKO_LAST_EXEC_START=$__start
       export EKKO_LAST_EXEC_TIME=$__time
       export EKKO_LAST_EXEC_CMD=$*
+      ekko_exec_after
       return $__return
       ;;
     no-exec)
       # Like exec but without actually executing.
       echo -e "\e[100m$*\e[0m"
-      export EKKO_LAST_EXEC_START=$(date +%s%3N)
+      EKKO_LAST_EXEC_START=$(date +%s%3N)
+      export EKKO_LAST_EXEC_START
       export EKKO_LAST_EXEC_TIME=0
       export EKKO_LAST_EXEC_CMD=$*
       ;;
