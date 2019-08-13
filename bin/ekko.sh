@@ -20,6 +20,7 @@
 export EKKO_LAST_EXEC_START=0
 export EKKO_LAST_EXEC_TIME=0
 export EKKO_LAST_EXEC_CMD=0
+export EKKO_LAST_EXEC_CODE=0
 
 #----------------------------------------------------------------------------
 # Help for the functions in this script.
@@ -75,7 +76,7 @@ function ekko_help() {
 # Called after any `ekko exec` call.
 function ekko_exec_after() {
   # # Persist times to a file.
-  # echo "$@;$EKKO_LAST_EXEC_START;$EKKO_LAST_EXEC_TIME;$EKKO_LAST_EXEC_CMD" \
+  # echo "$EKKO_LAST_EXEC_CODE;$EKKO_LAST_EXEC_START;$EKKO_LAST_EXEC_TIME;$EKKO_LAST_EXEC_CMD" \
   #     >> ~/.ekko-exec.log
   true
 }
@@ -152,6 +153,7 @@ function ekko() {
       export EKKO_LAST_EXEC_START=$__start
       export EKKO_LAST_EXEC_TIME=$__time
       export EKKO_LAST_EXEC_CMD=$*
+      export EKKO_LAST_EXEC_CODE=$__return
       ekko_exec_after
       return $__return
       ;;
@@ -162,6 +164,7 @@ function ekko() {
       export EKKO_LAST_EXEC_START
       export EKKO_LAST_EXEC_TIME=0
       export EKKO_LAST_EXEC_CMD=$*
+      export EKKO_LAST_EXEC_CODE=0
       ;;
     *)
       echo "$__all"
@@ -217,3 +220,6 @@ function __ekko_base_banner() {
     ekko "$__marker" "$__first" "$__rest $__line"
   fi
 }
+
+export -f ekko __ekko_base_hilite_first __ekko_base_kv __ekko_base_banner ekko_exec_after
+
