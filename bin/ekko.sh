@@ -33,8 +33,8 @@ function ekko_help() {
   ekko bold ekko bold MyComponent is starting
   ekko b ekko b MyComponent is starting
   ekko banner_b ekko banner_b MyComponent is starting
+  ekko
 
-  echo
   ekko banner_msg "Keys and values."
   ekko b $'ekko export MY_ENV_VARIABLE \\"a value\\"' "# Only echoed, not executed."
   ekko export MY_ENV_VARIABLE \"a value\"
@@ -49,16 +49,16 @@ function ekko_help() {
   ekko b ekko $'kv name ekko'
   ekko kv name ekko
   ekko kv column 30
+  ekko
 
-  echo
   ekko banner_msg "Execution."
   ekko b $'ekko no-exec ls -d "$HOME"/Do*' "# Print only."
   ekko no-exec ls -d "$HOME"/Do*
   ekko b $'ekko exec ls -d "$HOME"/Do*' "# Execute and timing."
   ekko exec ls -d "$HOME"/Do*
   ekko export EKKO_LAST_EXEC_TIME
+  ekko
 
-  echo
   ekko banner_msg "Reading arguments"
   ekko ok $'  # Read the arguments from the command line'
   ekko b "" $'  local __first=$1 && shift
@@ -69,7 +69,7 @@ function ekko_help() {
       && ekko env_not_null __second "SecondArgumentExampleValue" \
       || return $?'
   ekko ok $'  # At this point, the argument testing succeeded.'
-  echo
+  ekko
 }
 
 #----------------------------------------------------------------------------
