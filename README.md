@@ -1,7 +1,9 @@
-# ekko
+ekko
+==============================================================================
+
 Simple bash echo replacement with colour semantics.
 
-I got tired of boring `echo`s from my bash scripts.  This is a small and simple drop-in replacement that uses the first argument to assign some colour to your terminal! 
+I got tired of boring `echo`s from my bash scripts.  This is a small and simple drop-in replacement that uses the first argument to assign some colour to your terminal!
 
 Add it to your `.bashrc` and start generating simple ANSI coloured output!
 
@@ -12,7 +14,8 @@ ekko_help
 
 ![ekko_help terminal capture](./doc/ekko_help.svg)
 
-# Usage
+Usage
+==============================================================================
 
 ```
 ekko [MARKER] This is my message!
