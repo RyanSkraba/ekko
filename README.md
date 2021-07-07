@@ -60,3 +60,14 @@ You can also use the `exec` or `no-exec` markers to execute other commands.
 ekko exec find /tmp
 ekko no-exec find /tmp
 ```
+
+If you are on a system with the `notify-send` command (like [gnome][notify-send]), you can execute two types of popups:
+* `popup` Sends the message to the notification center directly.
+* `remind` Starts a background process that sleeps for `N` seconds before displaying.
+
+```
+ekko popup Splines have been reticulated
+ekko remind $((5 * 60)) Five minute break is finished
+```
+
+[notify-send]: https://developer.gnome.org/notification-spec/

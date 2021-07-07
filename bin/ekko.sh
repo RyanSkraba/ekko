@@ -25,7 +25,7 @@ export EKKO_LAST_EXEC_CODE=0
 #----------------------------------------------------------------------------
 # Help for the functions in this script.
 function ekko_help() {
-  ekko banner_msg "In colour with the first word highlighted."
+  ekko banner_msg "In colour with the first word highlighted"
   ekko msg ekko msg MyComponent is starting
   ekko error ekko error MyComponent aborted
   ekko warn ekko warn MyComponent is running out of space
@@ -35,7 +35,7 @@ function ekko_help() {
   ekko banner_b ekko banner_b MyComponent is starting
   ekko
 
-  ekko banner_msg "Keys and values."
+  ekko banner_msg "Keys and values"
   ekko b $'ekko export MY_ENV_VARIABLE \\"a value\\"' "# Only echoed, not executed."
   ekko export MY_ENV_VARIABLE \"a value\"
   ekko b $'ekko export PWD' "# Echos current value in env."
@@ -51,12 +51,17 @@ function ekko_help() {
   ekko kv column 30
   ekko
 
-  ekko banner_msg "Execution."
+  ekko banner_msg "Execution"
   ekko b $'ekko no-exec ls -d "$HOME"/Do*' "# Print only."
   ekko no-exec ls -d "$HOME"/Do*
   ekko b $'ekko exec ls -d "$HOME"/Do*' "# Execute and timing."
   ekko exec ls -d "$HOME"/Do*
   ekko export EKKO_LAST_EXEC_TIME
+  ekko
+
+  ekko banner_msg "Notifications"
+  ekko b "" $'ekko Splines have been reticulated'
+  ekko b "" $'ekko remind $((5 * 60)) Five minute break is finished'
   ekko
 
   ekko banner_msg "Reading arguments"
@@ -136,6 +141,15 @@ function ekko() {
     local __env_val="$*"
     [ -z "$__env_val" ] && __env_val=$(eval echo \$"$__env_var")
     echo -e "\e[37mexport \e[1m\e[95m${__env_var}\e[22m\e[37m=\e[1m\e[36m${__env_val}\e[0m"
+    ;;
+  popup)
+    local __msg="$*"
+    ekko exec $'notify-send Skort '"'$__msg'"$' &'
+    ;;
+  remind)
+    local __sleep="$1" && shift
+    local __msg="$*"
+    ekko exec $'sleep '"$__sleep"$' && notify-send Skort '"'$__msg'"$' &'
     ;;
   exec)
     # Print and execute the specified command, optionally storing the time.
