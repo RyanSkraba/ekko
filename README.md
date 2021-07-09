@@ -63,11 +63,13 @@ ekko no-exec find /tmp
 
 If you are on a system with the `notify-send` command (like [gnome][notify-send]), you can execute two types of popups:
 * __`popup`__ Sends the message to the notification center directly.
-* __`remind`__ Starts a background process that sleeps for `N` seconds before displaying.
+* __`remind`__ Starts a background process that sleeps for `N` seconds before displaying.  If the argument is non-numeric, try to parse it into seconds using the linux `date` command.
 
 ```
 ekko popup Splines have been reticulated
 ekko remind $((5 * 60)) Five minute break is finished
+ekko remind 25min Pompodoro #1 is ended
+ekko remind "1 day 1 hour" Water your plants
 ```
 
 [notify-send]: https://developer.gnome.org/notification-spec/

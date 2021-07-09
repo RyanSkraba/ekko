@@ -62,6 +62,7 @@ function ekko_help() {
   ekko banner_msg "Notifications"
   ekko b "" $'ekko Splines have been reticulated'
   ekko b "" $'ekko remind $((5 * 60)) Five minute break is finished'
+  ekko b "" $'ekko remind 5min Five minute break is finished'
   ekko
 
   ekko banner_msg "Reading arguments"
@@ -149,6 +150,10 @@ function ekko() {
   remind)
     local __sleep="$1" && shift
     local __msg="$*"
+    # If sleep is non numeric, then try to parse it using date.
+    if ! [[ $__sleep =~ ^[0-9]+$ ]]; then
+      __sleep=$(date +%s -d "1970-01-01 00:00:00GMT $__sleep")
+    fi
     ekko exec $'sleep '"$__sleep"$' && notify-send Skort '"'$__msg'"$' &'
     ;;
   exec)
