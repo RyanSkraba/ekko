@@ -60,7 +60,7 @@ function ekko_help() {
   ekko
 
   ekko banner_msg "Notifications"
-  ekko b "" $'ekko Splines have been reticulated'
+  ekko b "" $'ekko popup Splines have been reticulated'
   ekko b "" $'ekko remind $((5 * 60)) Five minute break is finished'
   ekko b "" $'ekko remind 5min Five minute break is finished'
   ekko
