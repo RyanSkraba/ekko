@@ -3,6 +3,8 @@
 # Helpful script for echoing with colour in bash.
 #
 # msg: cyan
+# msg2: light blue
+# msg3: light magenta
 # error: red
 # warn: yellow
 # ok: green
@@ -27,6 +29,8 @@ export EKKO_LAST_EXEC_CODE=0
 function ekko_help() {
   ekko banner_msg "In colour with the first word highlighted"
   ekko msg ekko msg MyComponent is starting
+  ekko msg2 ekko msg2 MyComponent is starting
+  ekko msg3 ekko msg3 MyComponent is starting
   ekko error ekko error MyComponent aborted
   ekko warn ekko warn MyComponent is running out of space
   ekko ok ekko ok MyComponent is successful
@@ -93,8 +97,14 @@ function ekko() {
   local __all="$*"
   local __marker=$1 && shift
   case $__marker in
-  msg)
+  msg | msg1)
     __ekko_base_hilite_first "\e[1m\e[36m" "\e[22m" "$@"
+    ;;
+  msg2)
+    __ekko_base_hilite_first "\e[1m\e[94m" "\e[22m" "$@"
+    ;;
+  msg3)
+    __ekko_base_hilite_first "\e[1m\e[95m" "\e[22m" "$@"
     ;;
   error)
     __ekko_base_hilite_first "\e[1m\e[31m" "\e[22m" "$@"
@@ -108,8 +118,14 @@ function ekko() {
   bold | b)
     __ekko_base_hilite_first "\e[1m" "\e[22m" "$@"
     ;;
-  banner_msg)
+  banner_msg | banner_msg1)
     __ekko_base_banner msg "$@"
+    ;;
+  banner_msg2)
+    __ekko_base_banner msg1 "$@"
+    ;;
+  banner_msg3)
+    __ekko_base_banner msg2 "$@"
     ;;
   banner_error)
     __ekko_base_banner error "$@"
