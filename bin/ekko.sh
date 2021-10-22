@@ -98,22 +98,22 @@ function ekko() {
   local __marker=$1 && shift
   case $__marker in
   msg | msg1)
-    __ekko_base_hilite_first "\e[1m\e[36m" "\e[22m" "$@"
+    __ekko_base_hilite_first "\e[1m\e[36m" "\e[22m\e[36m" "$@"
     ;;
   msg2)
-    __ekko_base_hilite_first "\e[1m\e[94m" "\e[22m" "$@"
+    __ekko_base_hilite_first "\e[1m\e[94m" "\e[22m\e[94m" "$@"
     ;;
   msg3)
-    __ekko_base_hilite_first "\e[1m\e[95m" "\e[22m" "$@"
+    __ekko_base_hilite_first "\e[1m\e[95m" "\e[22m\e[95m" "$@"
     ;;
   error)
-    __ekko_base_hilite_first "\e[1m\e[31m" "\e[22m" "$@"
+    __ekko_base_hilite_first "\e[1m\e[31m" "\e[22m\e[31m" "$@"
     ;;
   warn)
-    __ekko_base_hilite_first "\e[1m\e[33m" "\e[22m" "$@"
+    __ekko_base_hilite_first "\e[1m\e[33m" "\e[22m\e[33m" "$@"
     ;;
   ok)
-    __ekko_base_hilite_first "\e[1m\e[32m" "\e[22m" "$@"
+    __ekko_base_hilite_first "\e[1m\e[32m" "\e[22m\e[32m" "$@"
     ;;
   bold | b)
     __ekko_base_hilite_first "\e[1m" "\e[22m" "$@"
