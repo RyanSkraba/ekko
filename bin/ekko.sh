@@ -178,7 +178,8 @@ function ekko() {
     # ms, remove the 3 for nanoseconds
     local __start
     __start=$(date +%s%3N)
-    eval $'bash -c "'"$*"'"'
+    #eval $'bash -c "'"$*"'"'
+    bash -c "$*"
     local __return=$?
     local __time
     __time=$(($(date +%s%3N) - __start))
