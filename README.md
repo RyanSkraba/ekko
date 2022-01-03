@@ -22,7 +22,7 @@ ekko [MARKER] This is my message!
 ```
 
 The simple markers assign some colour and bold to the message:
-* __`msg`__: Information (cyan)
+* __`msg`__ or __`msg1`__, __`msg2`__, __`msg3`__: Information (cyan, blue, magenta)
 * __`error`__: Error (red)
 * __`warn`__: Warning (yellow)
 * __`ok`__: Success (green)
@@ -73,3 +73,18 @@ ekko remind "1 day 1 hour" Water your plants
 ```
 
 [notify-send]: https://developer.gnome.org/notification-spec/
+
+"Building" and Testing
+==============================================================================
+
+There are some some [BATS](https://bats-core.readthedocs.io/en/stable/) unit tests included with the project.
+
+```bash
+# Clone including submodules to include the BATS framework and testing tools.
+git clone --recurse-submodules git@github.com:RyanSkraba/ekko.git
+# Alternatively, update the submodules in place.
+git submodule update --init --recursive
+
+# Run the tests
+test/ekko.bats
+```
