@@ -82,6 +82,72 @@ function ekko_help() {
   ekko
 }
 
+# Prints out the sixteen standard colours as the foreground.
+function ekko_help_standard_foreground_sampler() {
+  local __codes=(30 31 32 33 34 35 36 37
+    90 91 92 93 94 95 96 97)
+  local __names=(Black Red Green Yellow Blue Magenta Cyan "L gray"
+    "D gray" "L red" "L green" "L yellow" "L blue" "L Magen" "L cyan" "White")
+  for i in "${!__codes[@]}"; do
+    echo -en "\e[${__codes[$i]}m\\\e[${__codes[$i]}m ${__names[$i]}"
+    if ((i % 4 == 3)); then
+      echo
+    else
+      echo -n $'\t'
+    fi
+  done
+}
+
+# Prints out help about using basic colours
+function ekko_help_ansi() {
+  echo -en $'\e[0m'
+  ekko banner_msg $'References'
+  ekko kv_6 ref https://misc.flogisoft.com/bash/tip_colors_and_formatting
+
+  echo -e $'\e[0m'
+  ekko banner_msg $'echo -e "\\\\e[39m Default"'
+  ekko_help_standard_foreground_sampler
+
+  echo -e $'\e[0m'
+  ekko banner_msg $'echo -e "\\\\e[1m Bold"'
+  echo -en $'\e[1m'
+  ekko_help_standard_foreground_sampler
+
+  echo -e $'\e[0m'
+  ekko banner_msg $'echo -e "\\\\e[2m Dim"'
+  echo -en $'\e[2m'
+  ekko_help_standard_foreground_sampler
+
+  echo -e $'\e[0m'
+  ekko banner_msg $'echo -e "\\\\e[0m Reset"'
+  ekko kv_24 'echo -e "\e[8m"' Set red backround \(+10 to any colour above\)
+  ekko kv_24 'echo -e "\e[1m"' '\e[1m'Bold
+  ekko kv_24 'echo -e "\e[2m"' '\e[2m'Dim
+  ekko kv_24 'echo -e "\e[4m"' '\e[4m'Underline
+  ekko kv_24 'echo -e "\e[5m"' '\e[5m'Blink
+  ekko kv_24 'echo -e "\e[7m"' '\e[7m'Invert background
+  ekko kv_24 'echo -e "\e[8m"' '\e[8m'HIDD3N'\e[0m' \(hidden but copyable\)
+  ekko kv_24 'echo -e "\e[24m"' Turn off dim \(+20 to any colour above\)
+  ekko kv_24 'echo -e "\e[5;1;100;33m"' '\e[5;1;100;33m'Combining attributes
+  ekko kv_24 'ekko_help_ansi256' For more information about 256 colour attributes
+
+}
+
+# Prints out the advanced colours
+function ekko_help_ansi256() {
+
+  for fgbg in 38 48; do # Foreground / Background
+    ekko banner_msg $'echo -e "\\\\e['"$fgbg"';5;COLm Reset"'
+    for color in {0..255}; do # Colors
+      printf "\e[${fgbg};5;%sm  %3s  \e[0m" "$color" "$color"
+      if ((color % 8 == 7)); then
+        echo
+      fi
+    done
+    echo # New line
+  done
+}
+
 #----------------------------------------------------------------------------
 # Called after any `ekko exec` call.
 function ekko_exec_after() {
