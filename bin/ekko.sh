@@ -275,6 +275,19 @@ function ekko() {
 }
 
 #----------------------------------------------------------------------------
+# A simplified, degraded ANSI-coloured echo that can be used as a fallback.
+# For more colours and functionality, install and source ekko.sh from
+# https://github.com/RyanSkraba/ekko/
+
+function ekko_simple() {
+  local __marker=$1 && shift
+  if [ "$__marker" = "exec" ]; then echo -e "\e[100m$*\e[0m" && bash -c "$*"
+  else echo -e "\e[36m$*\e[0m"
+  fi
+}
+[[ "$(type -t ekko)" == 'function' ]] || alias ekko=ekko_simple
+
+#----------------------------------------------------------------------------
 # Helper functions
 
 function __ekko_base_hilite_first() {
