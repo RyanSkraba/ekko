@@ -285,7 +285,7 @@ function ekko_simple() {
   else echo -e "\e[36m$*\e[0m"
   fi
 }
-[[ "$(type -t ekko)" == 'function' ]] || alias ekko=ekko_simple
+[[ "$(type -t ekko)" == 'function' ]] || function ekko() { ekko_simple "$@"; } && export -f ekko
 
 #----------------------------------------------------------------------------
 # Helper functions
