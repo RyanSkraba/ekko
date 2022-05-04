@@ -11,6 +11,29 @@ setup() {
   source "$DIR/../bin/ekko.sh"
 }
 
+# Echos a simple, colourful script to the terminal (line by line only)
+function ekko_script_help() {
+  ekko banner_msg $'# Hello'
+  ekko b "echo" Hello
+  ekko b "" echo World
+  ekko error "" ls /no-exist
+  ekko b "" echo SKIPPED
+}
+
+# Executes the script line by line
+function ekko_script_go() {
+  while IFS= read -r __cmd; do
+    ekko msg "$__cmd"
+    if ekko exec "$__cmd"; then
+       ekko ok Success
+    else
+       local __code=$?
+       ekko error Error \( $__code \)
+       return $__code
+    fi
+  done <<<"$(ekko_script_help | perl -pe 's/\e\[[0-9;]*m(?:\e\[K)?//g')"
+}
+
 @test "Echo a string without any colour" {
   run ekko Hello world
   assert_output "Hello world"
