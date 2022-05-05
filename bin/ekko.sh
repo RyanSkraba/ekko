@@ -188,10 +188,10 @@ function ekko() {
     __ekko_base_banner msg "$@"
     ;;
   banner_msg2)
-    __ekko_base_banner msg1 "$@"
+    __ekko_base_banner msg2 "$@"
     ;;
   banner_msg3)
-    __ekko_base_banner msg2 "$@"
+    __ekko_base_banner msg3 "$@"
     ;;
   banner_error)
     __ekko_base_banner error "$@"
