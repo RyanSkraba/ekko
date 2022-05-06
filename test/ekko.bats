@@ -183,6 +183,47 @@ function ekko_script_go() {
   assert_line --index 2 --regexp $'^..95mTIME: ..39m[0-9]+ \([0-9:\.]+\) echo "X  X4"....$'
 }
 
+@test "Echo a banner message with different types of bold" {
+  # Pretend there are 25 columns
+  function tput() { 
+    echo 25
+  }
+
+  # Different ways of bolding the two words
+  run ekko banner_msg "Hello world"
+  assert_output "$(echo -e $'\e[1m\e[36mHello world\e[22m\e[36m -------------\e[0m')"
+  run ekko banner_msg "Hello" world
+  assert_output "$(echo -e $'\e[1m\e[36mHello\e[22m\e[36m world -------------\e[0m')"
+  run ekko banner_msg "" Hello world
+  assert_output "$(echo -e $'\e[1m\e[36m\e[22m\e[36mHello world -------------\e[0m')"
+  run ekko banner_msg ""
+  assert_output "$(echo -e $'\e[1m\e[36m\e[22m\e[36m-------------------------\e[0m')"
+}
+
+@test "Echo a banner message with all the colours" {
+  # Pretend there are 25 columns
+  function tput() { 
+    echo 25
+  }
+
+  run ekko banner_msg1 "Hello" world
+  assert_output "$(echo -e $'\e[1m\e[36mHello\e[22m\e[36m world -------------\e[0m')"
+  run ekko banner_msg2 "Hello" world
+  assert_output "$(echo -e $'\e[1m\e[94mHello\e[22m\e[94m world -------------\e[0m')"
+  run ekko banner_msg3 "Hello" world
+  assert_output "$(echo -e $'\e[1m\e[95mHello\e[22m\e[95m world -------------\e[0m')"
+  run ekko banner_error "Hello" world
+  assert_output "$(echo -e $'\e[1m\e[31mHello\e[22m\e[31m world -------------\e[0m')"
+  run ekko banner_warn "Hello" world
+  assert_output "$(echo -e $'\e[1m\e[33mHello\e[22m\e[33m world -------------\e[0m')"
+  run ekko banner_ok "Hello" world
+  assert_output "$(echo -e $'\e[1m\e[32mHello\e[22m\e[32m world -------------\e[0m')"
+  run ekko banner_bold "Hello" world
+  assert_output "$(echo -e $'\e[1mHello\e[22m world -------------\e[0m')"
+  run ekko banner_b "Hello" world
+  assert_output "$(echo -e $'\e[1mHello\e[22m world -------------\e[0m')"
+}
+
 #----------------------------------------------------------------------------
 # Help for the functions in this script.
 function test_ekko_exec() {
