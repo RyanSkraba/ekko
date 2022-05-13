@@ -224,6 +224,17 @@ function ekko_script_go() {
   assert_output "$(echo -e $'\e[1mHello\e[22m world -------------\e[0m')"
 }
 
+@test "Echo a banner message with a long message" {
+  # Pretend there are 25 columns
+  function tput() { 
+    echo 25
+  }
+
+  # A message that overruns its size (TODO)
+  run ekko banner_msg "Hello world and all who inhabit it"
+  assert_output "$(echo -e $'\e[1m\e[36mHello world and all who inhabit it\e[22m\e[36m ----------\e[0m')"
+}
+
 #----------------------------------------------------------------------------
 # Help for the functions in this script.
 function test_ekko_exec() {
