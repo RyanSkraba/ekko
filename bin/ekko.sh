@@ -120,22 +120,20 @@ function ekko_help_ansi() {
 
   echo -e $'\e[0m'
   ekko banner_msg $'echo -e "\\\\e[0m Reset"'
-  ekko kv_24 'echo -e "\e[8m"' Set red backround \(+10 to any colour above\)
-  ekko kv_24 'echo -e "\e[1m"' '\e[1m'Bold
-  ekko kv_24 'echo -e "\e[2m"' '\e[2m'Dim
-  ekko kv_24 'echo -e "\e[4m"' '\e[4m'Underline
-  ekko kv_24 'echo -e "\e[5m"' '\e[5m'Blink
-  ekko kv_24 'echo -e "\e[7m"' '\e[7m'Invert background
-  ekko kv_24 'echo -e "\e[8m"' '\e[8m'HIDD3N'\e[0m' \(hidden but copyable\)
-  ekko kv_24 'echo -e "\e[24m"' Turn off dim \(+20 to any colour above\)
-  ekko kv_24 'echo -e "\e[5;1;100;33m"' '\e[5;1;100;33m'Combining attributes
-  ekko kv_24 'ekko_help_ansi256' For more information about 256 colour attributes
-
+  ekko kv_24 'echo -e "\e[41m"' '\e[41mSet red backround (+10 to any colour above)'
+  ekko kv_24 'echo -e "\e[1m"' '\e[1mBold'
+  ekko kv_24 'echo -e "\e[2m"' '\e[2mDim'
+  ekko kv_24 'echo -e "\e[4m"' '\e[4mUnderline'
+  ekko kv_24 'echo -e "\e[5m"' '\e[5mBlink'
+  ekko kv_24 'echo -e "\e[7m"' '\e[7mInvert background'
+  ekko kv_24 'echo -e "\e[8m"' '\e[8mHIDD3N\e[0m (hidden but copyable)'
+  ekko kv_24 'echo -e "\e[24m"' 'Turn off dim (+20 to any colour above)'
+  ekko kv_24 'echo -e "\e[5;1;100;33m"' '\e[5;1;100;33mCombining attributes'
+  ekko kv_24 'ekko_help_ansi256' 'For more information about 256 colour attributes'
 }
 
 # Prints out the advanced colours
 function ekko_help_ansi256() {
-
   for fgbg in 38 48; do # Foreground / Background
     ekko banner_msg $'echo -e "\\\\e['"$fgbg"';5;COLm Reset"'
     for color in {0..255}; do # Colors
