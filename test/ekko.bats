@@ -31,7 +31,7 @@ function ekko_script_go() {
        ekko error Error \( $__code \)
        return $__code
     fi
-  done <<<"$(ekko_script_help | perl -pe 's/\e\[[0-9;]*m(?:\e\[K)?//g')"
+  done <<<"$(ekko_script_help | ekko_uncolour)"
 }
 
 @test "Echo a string without any colour" {

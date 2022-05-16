@@ -82,6 +82,12 @@ function ekko_help() {
   ekko
 }
 
+# Removes colour information from the incoming text
+function ekko_uncolour() {
+  # https://stackoverflow.com/a/18000433/1437593
+  sed -r 's/\x1B\[(;?[0-9]{1,3})+[mGK]//g'
+} 
+
 # Prints out the sixteen standard colours as the foreground.
 function ekko_help_standard_foreground_sampler() {
   local __codes=(30 31 32 33 34 35 36 37
