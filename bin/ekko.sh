@@ -71,12 +71,13 @@ function ekko_help() {
 
   ekko banner_msg "Reading arguments"
   ekko ok $'  # Read the arguments from the command line'
-  ekko b "" $'  local __first=$1 && shift
-  local __second=$1 && shift
-  local __third=$1 && shift # optional
-  [ -z "$__third" ] && __third=ThirdArgumentDefaultValue'
-  ekko b $'  ekko env_not_null __first "FirstArgumentExampleValue" \
-      && ekko env_not_null __second "SecondArgumentExampleValue" \
+  ekko b "" $'  local __x1=$1 && shift
+  local __x2=$1 && shift
+  local __x3=${__x3-$1} && shift
+  local __x4=$1 && shift # optional
+  [ -z "$__x4" ] && __x4=ThirdArgumentDefaultValue'
+  ekko b $'  ekko env_not_null __x1 "FirstArgumentExampleValue" \
+      && ekko env_not_null __x2 "SecondArgumentExampleValue" \
       || return $?'
   ekko ok $'  # At this point, the argument testing succeeded.'
   ekko

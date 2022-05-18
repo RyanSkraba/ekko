@@ -9,6 +9,12 @@ setup() {
   load 'test_helper/bats-assert/load'
   DIR="$(cd "$(dirname "$BATS_TEST_FILENAME")" >/dev/null 2>&1 && pwd)"
   source "$DIR/../bin/ekko.sh"
+
+  # Tests the Reading arguments command from the help script
+  eval "function ekko_help_reading_arguments_section() {
+    $(ekko_help | ekko_uncolour | sed -n -r -e '/^Reading arguments -----/,/^$/p' | sed $'1d')
+    echo \$__x1 \$__x2 \$__x3 \$__x4 
+  }"
 }
 
 # Echos a simple, colourful script to the terminal (line by line only)
@@ -233,6 +239,20 @@ function ekko_script_go() {
   # A message that overruns its size (TODO)
   run ekko banner_msg "Hello world and all who inhabit it"
   assert_output "$(echo -e $'\e[1m\e[36mHello world and all who inhabit it\e[22m\e[36m ----------\e[0m')"
+}
+
+@test "Check help 'Reading arguments' with external variable" {
+  run ekko_help_reading_arguments_section 1 2 3 4
+  assert_output "1 2 3 4"
+  __x3=99
+  run ekko_help_reading_arguments_section 1 2 3 4
+  assert_output "1 2 99 4"
+  __x3=
+  run ekko_help_reading_arguments_section 1 2 3 4
+  assert_output "1 2 4"
+  unset __x3
+  run ekko_help_reading_arguments_section 1 2 3 4
+  assert_output "1 2 3 4"
 }
 
 #----------------------------------------------------------------------------
