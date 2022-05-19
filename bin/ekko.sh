@@ -81,6 +81,11 @@ function ekko_help() {
       || return $?'
   ekko ok $'  # At this point, the argument testing succeeded.'
   ekko
+
+  ekko banner_msg "Handling errors"
+  ekko b "" $'function works() { true || { ekko error ERROR && return 1; }; ekko ok OK; }'
+  ekko b "" $'function broke() { false || { ekko error ERROR && return 1; }; ekko ok OK; }'
+  ekko
 }
 
 # Removes colour information from the incoming text
