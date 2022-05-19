@@ -15,6 +15,12 @@ setup() {
     $(ekko_help | ekko_uncolour | sed -n -r -e '/^Reading arguments -----/,/^$/p' | sed $'1d')
     echo \$__x1 \$__x2 \$__x3 \$__x4 
   }"
+
+  # Tests the Handling errors command from the help script
+  eval "function ekko_help_handling_errors_section() {
+    $(ekko_help | ekko_uncolour | sed -n -r -e '/^Handling errors -----/,/^$/p' | sed $'1d')
+    echo \$__x1 \$__x2 \$__x3 \$__x4 
+  }"
 }
 
 # Echos a simple, colourful script to the terminal (line by line only)
@@ -253,6 +259,16 @@ function ekko_script_go() {
   unset __x3
   run ekko_help_reading_arguments_section 1 2 3 4
   assert_output "1 2 3 4"
+}
+
+@test "Check help 'Handling errors'" {
+  # This declares the functions
+  ekko_help_handling_errors_section
+  run works
+  assert_output "$(echo -e $'\e[1m\e[32mOK\e[0m')"
+  run -1 broke
+  assert_failure
+  assert_output "$(echo -e $'\e[1m\e[31mERROR\e[0m')"
 }
 
 #----------------------------------------------------------------------------
