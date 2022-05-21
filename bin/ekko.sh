@@ -73,11 +73,12 @@ function ekko_help() {
   ekko ok $'  # Read the arguments from the command line'
   ekko b "" $'  local __x1=$1 && shift
   local __x2=$1 && shift
-  local __x3=${__x3-$1} && shift
+  local __x3=${__x3:-$1} && shift
   local __x4=$1 && shift # optional
-  [ -z "$__x4" ] && __x4=ThirdArgumentDefaultValue'
-  ekko b $'  ekko env_not_null __x1 "FirstArgumentExampleValue" \
-      && ekko env_not_null __x2 "SecondArgumentExampleValue" \
+  [ -z "$__x4" ] && __x4=X4Value'
+  ekko b $'  ekko env_not_null __x1 "X1Value" \
+      && ekko env_not_null __x2 "X2Value" \
+      && ekko env_not_null __x3 "X3Value" \
       || return $?'
   ekko ok $'  # At this point, the argument testing succeeded.'
   ekko

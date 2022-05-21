@@ -247,6 +247,18 @@ function ekko_script_go() {
   assert_output "$(echo -e $'\e[1m\e[36mHello world and all who inhabit it\e[22m\e[36m ----------\e[0m')"
 }
 
+@test "Check help 'Reading arguments' with missing arguments" {
+  run ekko_help_reading_arguments_section
+  assert_failure
+  assert_output  "$(echo -e $'\e[1m\e[31mMissing argument:\e[22m\e[31m <__x1> (e.g. X1Value)\e[0m')"
+  run ekko_help_reading_arguments_section 1
+  assert_failure
+  assert_output  "$(echo -e $'\e[1m\e[31mMissing argument:\e[22m\e[31m <__x2> (e.g. X2Value)\e[0m')"
+  run ekko_help_reading_arguments_section 1 2
+  assert_failure
+  assert_output  "$(echo -e $'\e[1m\e[31mMissing argument:\e[22m\e[31m <__x3> (e.g. X3Value)\e[0m')"
+}
+
 @test "Check help 'Reading arguments' with external variable" {
   run ekko_help_reading_arguments_section 1 2 3 4
   assert_output "1 2 3 4"
@@ -255,7 +267,7 @@ function ekko_script_go() {
   assert_output "1 2 99 4"
   __x3=
   run ekko_help_reading_arguments_section 1 2 3 4
-  assert_output "1 2 4"
+  assert_output "1 2 3 4"
   unset __x3
   run ekko_help_reading_arguments_section 1 2 3 4
   assert_output "1 2 3 4"
