@@ -247,6 +247,24 @@ function ekko_script_go() {
   assert_output "$(echo -e $'\e[1m\e[36mHello world and all who inhabit it\e[22m\e[36m ----------\e[0m')"
 }
 
+@test "Echo keys and values" {
+  run ekko kv Hello kv
+  assert_output "$(echo -e $'\e[95m                         Hello: \e[39mkv\e[0m')"
+  run ekko kv_0 Hello kv_0
+  assert_output "$(echo -e $'\e[95mHello: \e[39mkv_0\e[0m')"
+  run ekko kv_1 Hello kv_1
+  assert_output "$(echo -e $'\e[95mHello: \e[39mkv_1\e[0m')"
+  run ekko kv_2 Hello kv_2
+  assert_output "$(echo -e $'\e[95mHello: \e[39mkv_2\e[0m')"
+  # TODO: Why does 5 have a space?
+  run ekko kv_6 Hello kv_5
+  assert_output "$(echo -e $'\e[95m Hello: \e[39mkv_5\e[0m')"
+  run ekko kv_6 Hello kv_6
+  assert_output "$(echo -e $'\e[95m Hello: \e[39mkv_6\e[0m')"
+  run ekko kv_7 Hello kv_7
+  assert_output "$(echo -e $'\e[95m  Hello: \e[39mkv_7\e[0m')"
+}
+
 @test "Check help 'Reading arguments' with missing arguments" {
   run ekko_help_reading_arguments_section
   assert_failure

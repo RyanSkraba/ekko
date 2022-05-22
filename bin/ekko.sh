@@ -220,7 +220,7 @@ function ekko() {
     __ekko_base_kv 30 "\e[95m" "\e[39m" "$@"
     ;;
   kv_*)
-    __ekko_base_kv "${__marker:3}" "\e[95m" "\e[39m" "$@"
+    __ekko_base_kv "${__marker#*_}" "\e[95m" "\e[39m" "$@"
     ;;
   env_not_null)
     local __var="$1" && shift
