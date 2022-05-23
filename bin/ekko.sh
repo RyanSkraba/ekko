@@ -222,6 +222,12 @@ function ekko() {
   kv_*)
     __ekko_base_kv "${__marker#*_}" "\e[95m" "\e[39m" "$@"
     ;;
+  '#'|comment)
+    __ekko_base_hilite_first "\e[1m\e[90m" "\e[22m\e[90m" "#" "$@"
+    ;;
+  '#'_*|comment_*)
+    __ekko_base_hilite_first "\e[1m\e[90m" "\e[22m\e[90m" "$(printf "%${__marker#*_}s" "#")" "$*"
+    ;;
   env_not_null)
     local __var="$1" && shift
     local __var_ex="$1" && shift
