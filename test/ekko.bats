@@ -265,6 +265,13 @@ function ekko_script_go() {
   assert_output "$(echo -e $'\e[95m  Hello: \e[39mkv_7\e[0m')"
 }
 
+@test "Echo test comments" {
+  run ekko comment Hello comment
+  assert_output "$(echo -e $'\e[1m\e[90m#\e[22m\e[90m Hello comment\e[0m')"
+  run ekko \# Hello \#
+  assert_output "$(echo -e $'\e[1m\e[90m#\e[22m\e[90m Hello #\e[0m')"
+}
+
 @test "Check help 'Reading arguments' with missing arguments" {
   run ekko_help_reading_arguments_section
   assert_failure
