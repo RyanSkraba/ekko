@@ -270,6 +270,24 @@ function ekko_script_go() {
   assert_output "$(echo -e $'\e[1m\e[90m#\e[22m\e[90m Hello comment\e[0m')"
   run ekko \# Hello \#
   assert_output "$(echo -e $'\e[1m\e[90m#\e[22m\e[90m Hello #\e[0m')"
+  # With a length of zero or one, it's like not using anything at all
+  run ekko comment_0 Hello comment_0
+  assert_output "$(echo -e $'\e[1m\e[90m#\e[22m\e[90m Hello comment_0\e[0m')"
+  run ekko \#_0 Hello \#_0
+  assert_output "$(echo -e $'\e[1m\e[90m#\e[22m\e[90m Hello #_0\e[0m')"
+  run ekko comment_1 Hello comment_1
+  assert_output "$(echo -e $'\e[1m\e[90m#\e[22m\e[90m Hello comment_1\e[0m')"
+  run ekko \#_1 Hello \#_1
+  assert_output "$(echo -e $'\e[1m\e[90m#\e[22m\e[90m Hello #_1\e[0m')"
+  # From 2 on, it starts padding with spaces
+  run ekko comment_2 Hello comment_2
+  assert_output "$(echo -e $'\e[1m\e[90m #\e[22m\e[90m Hello comment_2\e[0m')"
+  run ekko \#_2 Hello \#_2
+  assert_output "$(echo -e $'\e[1m\e[90m #\e[22m\e[90m Hello #_2\e[0m')"
+  run ekko comment_10 Hello comment_10
+  assert_output "$(echo -e $'\e[1m\e[90m         #\e[22m\e[90m Hello comment_10\e[0m')"
+  run ekko \#_10 Hello \#_10
+  assert_output "$(echo -e $'\e[1m\e[90m         #\e[22m\e[90m Hello #_10\e[0m')"
 }
 
 @test "Check help 'Reading arguments' with missing arguments" {
