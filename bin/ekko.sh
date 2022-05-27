@@ -222,11 +222,34 @@ function ekko() {
   kv_*)
     __ekko_base_kv "${__marker#*_}" "\e[95m" "\e[39m" "$@"
     ;;
-  '#'|comment)
-    __ekko_base_hilite_first "\e[1m\e[90m" "\e[22m\e[90m" "#" "$@"
+  '#' | comment)
+    __ekko_base_hilite_first "\e[1m\e[90m" "\e[22m\e[90m" "# $*"
     ;;
-  '#'_*|comment_*)
-    __ekko_base_hilite_first "\e[1m\e[90m" "\e[22m\e[90m" "$(printf "%${__marker#*_}s" "#")" "$*"
+
+  '#'_*_[0-9]* | comment_*_[0-9]*)
+    # Drop the comment part of the marker, and extract the last argument to use as the comment
+    __marker="${__marker#*_}"
+    local __args=("$@")
+    local __comment=${__args[-1]}
+    unset '__args[-1]'
+
+    # Format the message without the comment
+    local __formatted_msg
+    __formatted_msg=$(ekko "${__marker%_*}" "${__args[@]}")
+
+    # Calculate the padding between the message and comment.
+    local __padding_length=${__marker#*_}
+    __padding_length=$((__padding_length - $(echo "$__formatted_msg" | ekko_uncolour | wc -c)))
+    local __padding=" "
+    if [ $__padding_length -gt 1 ]; then
+      __padding="$(printf "%-${__padding_length}s" " ")"
+    fi
+
+    echo "$__formatted_msg$__padding$(ekko comment "$__comment")"
+    ;;
+
+  '#'_* | comment_*)
+    ekko "${__marker}_0" "$@"
     ;;
   env_not_null)
     local __var="$1" && shift
@@ -353,4 +376,4 @@ function __ekko_base_banner() {
   fi
 }
 
-export -f ekko __ekko_base_hilite_first __ekko_base_kv __ekko_base_banner ekko_exec_after
+export -f ekko ekko_uncolour __ekko_base_hilite_first __ekko_base_kv __ekko_base_banner ekko_exec_after
