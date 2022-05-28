@@ -93,7 +93,7 @@ function ekko_help() {
 function ekko_uncolour() {
   # https://stackoverflow.com/a/18000433/1437593
   sed -r 's/\x1B\[(;?[0-9]{1,3})+[mGK]//g'
-} 
+}
 
 # Prints out the sixteen standard colours as the foreground.
 function ekko_help_standard_foreground_sampler() {
@@ -321,8 +321,10 @@ function ekko() {
 
 function ekko_simple() {
   local __marker=$1 && shift
-  if [ "$__marker" = "exec" ]; then echo -e "\e[100m$*\e[0m" && bash -c "$*"
-  else echo -e "\e[36m$*\e[0m"
+  if [ "$__marker" = "exec" ]; then
+    echo -e "\e[100m$*\e[0m" && bash -c "$*"
+  else
+    echo -e "\e[36m$*\e[0m"
   fi
 }
 [[ "$(type -t ekko)" == 'function' ]] || function ekko() { ekko_simple "$@"; } && export -f ekko
