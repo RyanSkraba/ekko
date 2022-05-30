@@ -12,13 +12,13 @@ setup() {
 
   # Tests the Reading arguments command from the help script
   eval "function ekko_help_reading_arguments_section() {
-    $(ekko_help | ekko_uncolour | sed -n -r -e '/^Reading arguments -----/,/^$/p' | sed $'1d')
+    $(ekko_help_functions | ekko_uncolour | sed -n -r -e '/^Reading arguments -----/,/^$/p' | sed $'1d')
     echo \$__x1 \$__x2 \$__x3 \$__x4 
   }"
 
   # Tests the Handling errors command from the help script
   eval "function ekko_help_handling_errors_section() {
-    $(ekko_help | ekko_uncolour | sed -n -r -e '/^Handling errors -----/,/^$/p' | sed $'1d')
+    $(ekko_help_functions | ekko_uncolour | sed -n -r -e '/^Handling errors -----/,/^$/p' | sed $'1d')
     echo \$__x1 \$__x2 \$__x3 \$__x4 
   }"
 }

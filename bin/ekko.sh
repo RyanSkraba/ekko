@@ -27,7 +27,7 @@ export EKKO_LAST_EXEC_CODE=0
 #----------------------------------------------------------------------------
 # Help for the functions in this script.
 function ekko_help() {
-  ekko banner_msg "In colour with the first word highlighted"
+  ekko banner_msg "Basic colour formatting"
   ekko msg ekko msg MyComponent is starting
   ekko msg2 ekko msg2 MyComponent is starting
   ekko msg3 ekko msg3 MyComponent is starting
@@ -36,13 +36,15 @@ function ekko_help() {
   ekko ok ekko ok MyComponent is successful
   ekko bold ekko bold MyComponent is starting
   ekko b ekko b MyComponent is starting
-  ekko banner_b ekko banner_b MyComponent is starting
+  ekko banner_b ekko banner_b Prefix with "$(ekko msg3 banner_)" to fill dashes
+  ekko comment_b ekko comment_b Prefix with "$(ekko msg3 comment_)" "to add comments"
+  ekko comment_b_45 ekko comment_b_45 And suffix with "$(ekko msg3 _NN)" "to align comments at col NN"
   ekko
 
-  ekko banner_msg "Keys and values"
-  ekko b $'ekko export MY_ENV_VARIABLE \\"a value\\"' "# Only echoed, not executed."
+  ekko banner_msg "Environment, keys and values"
+  ekko comment_b $'ekko export MY_ENV_VARIABLE \\"a value\\"' "Only echoed, not executed"
   ekko export MY_ENV_VARIABLE \"a value\"
-  ekko b $'ekko export PWD' "# Echos current value in env."
+  ekko comment_b $'ekko export PWD' "Echos current value in env"
   ekko export PWD
   ekko b ekko $'kv_12 name ekko'
   ekko kv_12 name ekko
@@ -52,13 +54,13 @@ function ekko_help() {
   ekko kv_45 column 45
   ekko b ekko $'kv name ekko'
   ekko kv name ekko
-  ekko kv column 30
+  ekko kv column 30 "(default)"
   ekko
 
   ekko banner_msg "Execution"
-  ekko b $'ekko no-exec ls -d "$HOME"/Do*' "# Print only."
+  ekko comment_b $'ekko no-exec ls -d "$HOME"/Do*' "Print only"
   ekko no-exec ls -d "$HOME"/Do*
-  ekko b $'ekko exec ls -d "$HOME"/Do*' "# Execute and timing."
+  ekko comment_b $'ekko exec ls -d "$HOME"/Do*' "Execute and timing"
   ekko exec ls -d "$HOME"/Do*
   ekko export EKKO_LAST_EXEC_TIME
   ekko
@@ -68,7 +70,10 @@ function ekko_help() {
   ekko b "ekko" $'remind $((5 * 60)) Five minute break is finished'
   ekko b "ekko" $'remind 5min Five minute break is finished'
   ekko
+  ekko warn $'see ekko_help_functions for examples on using in functions'
+}
 
+function ekko_help_functions() {
   ekko banner_msg "Reading arguments"
   ekko ok $'  # Read the arguments from the command line'
   ekko b "" $'  local __x1=$1 && shift
