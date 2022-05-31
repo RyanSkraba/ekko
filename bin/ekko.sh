@@ -70,10 +70,10 @@ function ekko_help() {
   ekko b "ekko" $'remind $((5 * 60)) Five minute break is finished'
   ekko b "ekko" $'remind 5min Five minute break is finished'
   ekko
-  ekko warn $'see ekko_help_functions for examples on using in functions'
+  ekko warn $'see ekko_help_examples for examples on using in functions'
 }
 
-function ekko_help_functions() {
+function ekko_help_examples() {
   ekko banner_msg "Reading arguments"
   ekko ok $'  # Read the arguments from the command line'
   ekko b "" $'  local __x1=$1 && shift

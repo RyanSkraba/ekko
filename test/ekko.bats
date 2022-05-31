@@ -11,14 +11,14 @@ setup() {
   source "$DIR/../bin/ekko.sh"
 
   # Tests the Reading arguments command from the help script
-  eval "function ekko_help_reading_arguments_section() {
-    $(ekko_help_functions | ekko_uncolour | sed -n -r -e '/^Reading arguments -----/,/^$/p' | sed $'1d')
+  eval "function ekko_help_reading_arguments_example() {
+    $(ekko_help_examples | ekko_uncolour | sed -n -r -e '/^Reading arguments -----/,/^$/p' | sed $'1d')
     echo \$__x1 \$__x2 \$__x3 \$__x4 
   }"
 
   # Tests the Handling errors command from the help script
-  eval "function ekko_help_handling_errors_section() {
-    $(ekko_help_functions | ekko_uncolour | sed -n -r -e '/^Handling errors -----/,/^$/p' | sed $'1d')
+  eval "function ekko_help_handling_errors_example() {
+    $(ekko_help_examples | ekko_uncolour | sed -n -r -e '/^Handling errors -----/,/^$/p' | sed $'1d')
     echo \$__x1 \$__x2 \$__x3 \$__x4 
   }"
 }
@@ -300,35 +300,35 @@ function ekko_script_go() {
   assert_output "$(echo -e $'\e[1m\e[36mHello\e[22m\e[36m world\e[0m             \e[1m\e[90m# #_msg_25\e[0m')"
 }
 
-@test "Check help 'Reading arguments' with missing arguments" {
-  run ekko_help_reading_arguments_section
+@test "Check help example'Reading arguments' with missing arguments" {
+  run ekko_help_reading_arguments_example
   assert_failure
   assert_output  "$(echo -e $'\e[1m\e[31mMissing argument:\e[22m\e[31m <__x1> (e.g. X1Value)\e[0m')"
-  run ekko_help_reading_arguments_section 1
+  run ekko_help_reading_arguments_example 1
   assert_failure
   assert_output  "$(echo -e $'\e[1m\e[31mMissing argument:\e[22m\e[31m <__x2> (e.g. X2Value)\e[0m')"
-  run ekko_help_reading_arguments_section 1 2
+  run ekko_help_reading_arguments_example 1 2
   assert_failure
   assert_output  "$(echo -e $'\e[1m\e[31mMissing argument:\e[22m\e[31m <__x3> (e.g. X3Value)\e[0m')"
 }
 
-@test "Check help 'Reading arguments' with external variable" {
-  run ekko_help_reading_arguments_section 1 2 3 4
+@test "Check help example 'Reading arguments' with external variable" {
+  run ekko_help_reading_arguments_example 1 2 3 4
   assert_output "1 2 3 4"
   __x3=99
-  run ekko_help_reading_arguments_section 1 2 3 4
+  run ekko_help_reading_arguments_example 1 2 3 4
   assert_output "1 2 99 4"
   __x3=
-  run ekko_help_reading_arguments_section 1 2 3 4
+  run ekko_help_reading_arguments_example 1 2 3 4
   assert_output "1 2 3 4"
   unset __x3
-  run ekko_help_reading_arguments_section 1 2 3 4
+  run ekko_help_reading_arguments_example 1 2 3 4
   assert_output "1 2 3 4"
 }
 
-@test "Check help 'Handling errors'" {
+@test "Check help example 'Handling errors'" {
   # This declares the functions
-  ekko_help_handling_errors_section
+  ekko_help_handling_errors_example
   run works
   assert_output "$(echo -e $'\e[1m\e[32mOK\e[0m')"
   run -1 broke
