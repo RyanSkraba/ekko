@@ -14,6 +14,8 @@ ekko_help
 
 ![ekko_help terminal capture](./doc/ekko_help.svg)
 
+![ekko_help_examples terminal capture](./doc/ekko_help_examples.svg)
+
 Usage
 ==============================================================================
 
