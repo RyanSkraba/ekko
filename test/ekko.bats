@@ -4,7 +4,9 @@
 # Unit tests for ekko
 #----------------------------------------------------------------------------
 
-__boff=$'\e[22m' # Normal intensity, bold off
+__reset=$'\e[0m'  # Reset to default
+__bon=$'\e[1m'    # Bold intensity
+__boff=$'\e[22m'  # Normal intensity, bold off
 
 setup() {
 
@@ -56,113 +58,113 @@ function ekko_script_go() {
 
 @test "Echo a simple message with all the colours" {
   run ekko msg Hello world
-  assert_output "$(echo -e "\e[1m\e[36mHello${__boff}\e[36m world\e[0m")"
+  assert_output "$(echo -e "${__bon}\e[36mHello${__boff}\e[36m world${__reset}")"
   run ekko msg1 Hello world
-  assert_output "$(echo -e "\e[1m\e[36mHello${__boff}\e[36m world\e[0m")"
+  assert_output "$(echo -e "${__bon}\e[36mHello${__boff}\e[36m world${__reset}")"
   run ekko msg2 Hello world
-  assert_output "$(echo -e "\e[1m\e[94mHello${__boff}\e[94m world\e[0m")"
+  assert_output "$(echo -e "${__bon}\e[94mHello${__boff}\e[94m world${__reset}")"
   run ekko msg3 Hello world
-  assert_output "$(echo -e "\e[1m\e[95mHello${__boff}\e[95m world\e[0m")"
+  assert_output "$(echo -e "${__bon}\e[95mHello${__boff}\e[95m world${__reset}")"
   run ekko error Hello world
-  assert_output "$(echo -e "\e[1m\e[31mHello${__boff}\e[31m world\e[0m")"
+  assert_output "$(echo -e "${__bon}\e[31mHello${__boff}\e[31m world${__reset}")"
   run ekko warn Hello world
-  assert_output "$(echo -e "\e[1m\e[33mHello${__boff}\e[33m world\e[0m")"
+  assert_output "$(echo -e "${__bon}\e[33mHello${__boff}\e[33m world${__reset}")"
   run ekko ok Hello world
-  assert_output "$(echo -e "\e[1m\e[32mHello${__boff}\e[32m world\e[0m")"
+  assert_output "$(echo -e "${__bon}\e[32mHello${__boff}\e[32m world${__reset}")"
   run ekko bold Hello world
-  assert_output "$(echo -e "\e[1mHello${__boff} world\e[0m")"
+  assert_output "$(echo -e "${__bon}Hello${__boff} world${__reset}")"
   run ekko b Hello world
-  assert_output "$(echo -e "\e[1mHello${__boff} world\e[0m")"
+  assert_output "$(echo -e "${__bon}Hello${__boff} world${__reset}")"
 }
 
 @test "Echo a simple message with quoted bold" {
   run ekko msg "Hey there" world
-  assert_output "$(echo -e "\e[1m\e[36mHey there${__boff}\e[36m world\e[0m")"
+  assert_output "$(echo -e "${__bon}\e[36mHey there${__boff}\e[36m world${__reset}")"
   run ekko msg1 "Hey there" world
-  assert_output "$(echo -e "\e[1m\e[36mHey there${__boff}\e[36m world\e[0m")"
+  assert_output "$(echo -e "${__bon}\e[36mHey there${__boff}\e[36m world${__reset}")"
   run ekko msg2 "Hey there" world
-  assert_output "$(echo -e "\e[1m\e[94mHey there${__boff}\e[94m world\e[0m")"
+  assert_output "$(echo -e "${__bon}\e[94mHey there${__boff}\e[94m world${__reset}")"
   run ekko msg3 "Hey there" world
-  assert_output "$(echo -e "\e[1m\e[95mHey there${__boff}\e[95m world\e[0m")"
+  assert_output "$(echo -e "${__bon}\e[95mHey there${__boff}\e[95m world${__reset}")"
   run ekko error "Hey there" world
-  assert_output "$(echo -e "\e[1m\e[31mHey there${__boff}\e[31m world\e[0m")"
+  assert_output "$(echo -e "${__bon}\e[31mHey there${__boff}\e[31m world${__reset}")"
   run ekko warn "Hey there" world
-  assert_output "$(echo -e "\e[1m\e[33mHey there${__boff}\e[33m world\e[0m")"
+  assert_output "$(echo -e "${__bon}\e[33mHey there${__boff}\e[33m world${__reset}")"
   run ekko ok "Hey there" world
-  assert_output "$(echo -e "\e[1m\e[32mHey there${__boff}\e[32m world\e[0m")"
+  assert_output "$(echo -e "${__bon}\e[32mHey there${__boff}\e[32m world${__reset}")"
   run ekko bold "Hey there" world
-  assert_output "$(echo -e "\e[1mHey there${__boff} world\e[0m")"
+  assert_output "$(echo -e "${__bon}Hey there${__boff} world${__reset}")"
   run ekko b "Hey there" world
-  assert_output "$(echo -e "\e[1mHey there${__boff} world\e[0m")"
+  assert_output "$(echo -e "${__bon}Hey there${__boff} world${__reset}")"
 }
 
 @test "Echo a simple message with no bold" {
   run ekko msg "" Hello world
-  assert_output "$(echo -e "\e[1m\e[36m${__boff}\e[36mHello world\e[0m")"
+  assert_output "$(echo -e "${__bon}\e[36m${__boff}\e[36mHello world${__reset}")"
   run ekko msg1 "" Hello world
-  assert_output "$(echo -e "\e[1m\e[36m${__boff}\e[36mHello world\e[0m")"
+  assert_output "$(echo -e "${__bon}\e[36m${__boff}\e[36mHello world${__reset}")"
   run ekko msg2 "" Hello world
-  assert_output "$(echo -e "\e[1m\e[94m${__boff}\e[94mHello world\e[0m")"
+  assert_output "$(echo -e "${__bon}\e[94m${__boff}\e[94mHello world${__reset}")"
   run ekko msg3 "" Hello world
-  assert_output "$(echo -e "\e[1m\e[95m${__boff}\e[95mHello world\e[0m")"
+  assert_output "$(echo -e "${__bon}\e[95m${__boff}\e[95mHello world${__reset}")"
   run ekko error "" Hello world
-  assert_output "$(echo -e "\e[1m\e[31m${__boff}\e[31mHello world\e[0m")"
+  assert_output "$(echo -e "${__bon}\e[31m${__boff}\e[31mHello world${__reset}")"
   run ekko warn "" Hello world
-  assert_output "$(echo -e "\e[1m\e[33m${__boff}\e[33mHello world\e[0m")"
+  assert_output "$(echo -e "${__bon}\e[33m${__boff}\e[33mHello world${__reset}")"
   run ekko ok "" Hello world
-  assert_output "$(echo -e "\e[1m\e[32m${__boff}\e[32mHello world\e[0m")"
+  assert_output "$(echo -e "${__bon}\e[32m${__boff}\e[32mHello world${__reset}")"
   run ekko bold "" Hello world
-  assert_output "$(echo -e "\e[1m${__boff}Hello world\e[0m")"
+  assert_output "$(echo -e "${__bon}${__boff}Hello world${__reset}")"
   run ekko b "" Hello world
-  assert_output "$(echo -e "\e[1m${__boff}Hello world\e[0m")"
+  assert_output "$(echo -e "${__bon}${__boff}Hello world${__reset}")"
 }
 
 @test "Echo a simple message with only bold" {
   run ekko msg "Hello world"
-  assert_output "$(echo -e "\e[1m\e[36mHello world\e[0m")"
+  assert_output "$(echo -e "${__bon}\e[36mHello world${__reset}")"
   run ekko msg1 "Hello world"
-  assert_output "$(echo -e "\e[1m\e[36mHello world\e[0m")"
+  assert_output "$(echo -e "${__bon}\e[36mHello world${__reset}")"
   run ekko msg2 "Hello world"
-  assert_output "$(echo -e "\e[1m\e[94mHello world\e[0m")"
+  assert_output "$(echo -e "${__bon}\e[94mHello world${__reset}")"
   run ekko msg3 "Hello world"
-  assert_output "$(echo -e "\e[1m\e[95mHello world\e[0m")"
+  assert_output "$(echo -e "${__bon}\e[95mHello world${__reset}")"
   run ekko error "Hello world"
-  assert_output "$(echo -e "\e[1m\e[31mHello world\e[0m")"
+  assert_output "$(echo -e "${__bon}\e[31mHello world${__reset}")"
   run ekko warn "Hello world"
-  assert_output "$(echo -e "\e[1m\e[33mHello world\e[0m")"
+  assert_output "$(echo -e "${__bon}\e[33mHello world${__reset}")"
   run ekko ok "Hello world"
-  assert_output "$(echo -e "\e[1m\e[32mHello world\e[0m")"
+  assert_output "$(echo -e "${__bon}\e[32mHello world${__reset}")"
   run ekko bold "Hello world"
-  assert_output "$(echo -e "\e[1mHello world\e[0m")"
+  assert_output "$(echo -e "${__bon}Hello world${__reset}")"
   run ekko b "Hello world"
-  assert_output "$(echo -e "\e[1mHello world\e[0m")"
+  assert_output "$(echo -e "${__bon}Hello world${__reset}")"
 }
 
 @test "Execute a command with quotes" {
   run ekko exec echo XX1
   assert_equal ${#lines[@]} 3
-  assert_line --index 0 "$(echo -e "\e[100mecho XX1\e[0m")"
+  assert_line --index 0 "$(echo -e "\e[100mecho XX1${__reset}")"
   assert_line --index 1 XX1
   assert_line --index 2 --partial 'echo XX1'
   assert_line --index 2 --regexp $'^..95mTIME: ..39m[0-9]+ \([0-9:\.]+\) echo XX1....$'
 
   run ekko exec echo \"XX2\"
   assert_equal ${#lines[@]} 3
-  assert_line --index 0 "$(echo -e "\e[100mecho \"XX2\"\e[0m")"
+  assert_line --index 0 "$(echo -e "\e[100mecho \"XX2\"${__reset}")"
   assert_line --index 1 XX2
   assert_line --index 2 --partial 'echo "XX2"'
   assert_line --index 2 --regexp $'^..95mTIME: ..39m[0-9]+ \([0-9:\.]+\) echo "XX2"....$'
 
   run ekko exec echo \\\"XX3\\\"
   assert_equal ${#lines[@]} 3
-  assert_line --index 0 "$(echo -e "\e[100mecho \\\"XX3\\\"\e[0m")"
+  assert_line --index 0 "$(echo -e "\e[100mecho \\\"XX3\\\"${__reset}")"
   assert_line --index 1 $'"XX3"'
   assert_line --index 2 --partial 'echo "XX3"'
   assert_line --index 2 --regexp $'^..95mTIME: ..39m[0-9]+ \([0-9:\.]+\) echo "XX3"....$'
 
   run ekko exec echo "\\\"XX4\\\""
   assert_equal ${#lines[@]} 3
-  assert_line --index 0 "$(echo -e "\e[100mecho \\\"XX4\\\"\e[0m")"
+  assert_line --index 0 "$(echo -e "\e[100mecho \\\"XX4\\\"${__reset}")"
   assert_line --index 1 $'"XX4"'
   assert_line --index 2 --partial 'echo "XX4"'
   assert_line --index 2 --regexp $'^..95mTIME: ..39m[0-9]+ \([0-9:\.]+\) echo "XX4"....$'
@@ -171,28 +173,28 @@ function ekko_script_go() {
 @test "Execute a command with quotes and spaces" {
   run ekko exec echo X X1
   assert_equal ${#lines[@]} 3
-  assert_line --index 0 "$(echo -e "\e[100mecho X X1\e[0m")"
+  assert_line --index 0 "$(echo -e "\e[100mecho X X1${__reset}")"
   assert_line --index 1 "X X1"
   assert_line --index 2 --partial 'echo X X1'
   assert_line --index 2 --regexp $'^..95mTIME: ..39m[0-9]+ \([0-9:\.]+\) echo X X1....$'
 
   run ekko exec echo \"X X2\"
   assert_equal ${#lines[@]} 3
-  assert_line --index 0 "$(echo -e "\e[100mecho \"X X2\"\e[0m")"
+  assert_line --index 0 "$(echo -e "\e[100mecho \"X X2\"${__reset}")"
   assert_line --index 1 "X X2"
   assert_line --index 2 --partial 'echo "X X2"'
   assert_line --index 2 --regexp $'^..95mTIME: ..39m[0-9]+ \([0-9:\.]+\) echo "X X2"....$'
 
   run ekko exec echo \\\"X X3\\\"
   assert_equal ${#lines[@]} 3
-  assert_line --index 0 "$(echo -e "\e[100mecho \\\"X X3\\\"\e[0m")"
+  assert_line --index 0 "$(echo -e "\e[100mecho \\\"X X3\\\"${__reset}")"
   assert_line --index 1 '"X X3"'
   assert_line --index 2 --partial 'echo "X X3"'
   assert_line --index 2 --regexp $'^..95mTIME: ..39m[0-9]+ \([0-9:\.]+\) echo "X X3"....$'
 
   run ekko exec echo "\\\"X  X4\\\""
   assert_equal ${#lines[@]} 3
-  assert_line --index 0 "$(echo -e "\e[100mecho \\\"X  X4\\\"\e[0m")"
+  assert_line --index 0 "$(echo -e "\e[100mecho \\\"X  X4\\\"${__reset}")"
   assert_line --index 1 '"X X4"'
   assert_line --index 2 --partial 'echo "X  X4"'
   assert_line --index 2 --regexp $'^..95mTIME: ..39m[0-9]+ \([0-9:\.]+\) echo "X  X4"....$'
@@ -206,13 +208,13 @@ function ekko_script_go() {
 
   # Different ways of bolding the two words
   run ekko banner_msg "Hello world"
-  assert_output "$(echo -e "\e[1m\e[36mHello world${__boff}\e[36m -------------\e[0m")"
+  assert_output "$(echo -e "${__bon}\e[36mHello world${__boff}\e[36m -------------${__reset}")"
   run ekko banner_msg "Hello" world
-  assert_output "$(echo -e "\e[1m\e[36mHello${__boff}\e[36m world -------------\e[0m")"
+  assert_output "$(echo -e "${__bon}\e[36mHello${__boff}\e[36m world -------------${__reset}")"
   run ekko banner_msg "" Hello world
-  assert_output "$(echo -e "\e[1m\e[36m${__boff}\e[36mHello world -------------\e[0m")"
+  assert_output "$(echo -e "${__bon}\e[36m${__boff}\e[36mHello world -------------${__reset}")"
   run ekko banner_msg ""
-  assert_output "$(echo -e "\e[1m\e[36m${__boff}\e[36m-------------------------\e[0m")"
+  assert_output "$(echo -e "${__bon}\e[36m${__boff}\e[36m-------------------------${__reset}")"
 }
 
 @test "Echo a banner message with all the colours" {
@@ -222,21 +224,21 @@ function ekko_script_go() {
   }
 
   run ekko banner_msg1 "Hello" world
-  assert_output "$(echo -e "\e[1m\e[36mHello${__boff}\e[36m world -------------\e[0m")"
+  assert_output "$(echo -e "${__bon}\e[36mHello${__boff}\e[36m world -------------${__reset}")"
   run ekko banner_msg2 "Hello" world
-  assert_output "$(echo -e "\e[1m\e[94mHello${__boff}\e[94m world -------------\e[0m")"
+  assert_output "$(echo -e "${__bon}\e[94mHello${__boff}\e[94m world -------------${__reset}")"
   run ekko banner_msg3 "Hello" world
-  assert_output "$(echo -e "\e[1m\e[95mHello${__boff}\e[95m world -------------\e[0m")"
+  assert_output "$(echo -e "${__bon}\e[95mHello${__boff}\e[95m world -------------${__reset}")"
   run ekko banner_error "Hello" world
-  assert_output "$(echo -e "\e[1m\e[31mHello${__boff}\e[31m world -------------\e[0m")"
+  assert_output "$(echo -e "${__bon}\e[31mHello${__boff}\e[31m world -------------${__reset}")"
   run ekko banner_warn "Hello" world
-  assert_output "$(echo -e "\e[1m\e[33mHello${__boff}\e[33m world -------------\e[0m")"
+  assert_output "$(echo -e "${__bon}\e[33mHello${__boff}\e[33m world -------------${__reset}")"
   run ekko banner_ok "Hello" world
-  assert_output "$(echo -e "\e[1m\e[32mHello${__boff}\e[32m world -------------\e[0m")"
+  assert_output "$(echo -e "${__bon}\e[32mHello${__boff}\e[32m world -------------${__reset}")"
   run ekko banner_bold "Hello" world
-  assert_output "$(echo -e "\e[1mHello${__boff} world -------------\e[0m")"
+  assert_output "$(echo -e "${__bon}Hello${__boff} world -------------${__reset}")"
   run ekko banner_b "Hello" world
-  assert_output "$(echo -e "\e[1mHello${__boff} world -------------\e[0m")"
+  assert_output "$(echo -e "${__bon}Hello${__boff} world -------------${__reset}")"
 }
 
 @test "Echo a banner message with a long message" {
@@ -247,72 +249,72 @@ function ekko_script_go() {
 
   # A message that overruns its size (TODO)
   run ekko banner_msg "Hello world and all who inhabit it"
-  assert_output "$(echo -e "\e[1m\e[36mHello world and all who inhabit it${__boff}\e[36m ----------\e[0m")"
+  assert_output "$(echo -e "${__bon}\e[36mHello world and all who inhabit it${__boff}\e[36m ----------${__reset}")"
 }
 
 @test "Echo keys and values" {
   run ekko kv Hello kv
-  assert_output "$(echo -e "\e[95m                         Hello: \e[39mkv\e[0m")"
+  assert_output "$(echo -e "\e[95m                         Hello: \e[39mkv${__reset}")"
   run ekko kv_0 Hello kv_0
-  assert_output "$(echo -e "\e[95mHello: \e[39mkv_0\e[0m")"
+  assert_output "$(echo -e "\e[95mHello: \e[39mkv_0${__reset}")"
   run ekko kv_1 Hello kv_1
-  assert_output "$(echo -e "\e[95mHello: \e[39mkv_1\e[0m")"
+  assert_output "$(echo -e "\e[95mHello: \e[39mkv_1${__reset}")"
   run ekko kv_2 Hello kv_2
-  assert_output "$(echo -e "\e[95mHello: \e[39mkv_2\e[0m")"
+  assert_output "$(echo -e "\e[95mHello: \e[39mkv_2${__reset}")"
   # TODO: Why does 5 have a space?
   run ekko kv_6 Hello kv_5
-  assert_output "$(echo -e "\e[95m Hello: \e[39mkv_5\e[0m")"
+  assert_output "$(echo -e "\e[95m Hello: \e[39mkv_5${__reset}")"
   run ekko kv_6 Hello kv_6
-  assert_output "$(echo -e "\e[95m Hello: \e[39mkv_6\e[0m")"
+  assert_output "$(echo -e "\e[95m Hello: \e[39mkv_6${__reset}")"
   run ekko kv_7 Hello kv_7
-  assert_output "$(echo -e "\e[95m  Hello: \e[39mkv_7\e[0m")"
+  assert_output "$(echo -e "\e[95m  Hello: \e[39mkv_7${__reset}")"
 }
 
 @test "Echo test comments" {
   run ekko comment Hello comment
-  assert_output "$(echo -e "\e[1m\e[90m# Hello comment\e[0m")"
+  assert_output "$(echo -e "${__bon}\e[90m# Hello comment${__reset}")"
   run ekko \# Hello \#
-  assert_output "$(echo -e "\e[1m\e[90m# Hello #\e[0m")"
+  assert_output "$(echo -e "${__bon}\e[90m# Hello #${__reset}")"
 }
 
 @test "Echo test comments on formatted messages" {
   run ekko comment_msg Hello world COMMENT
-  assert_output "$(echo -e "\e[1m\e[36mHello${__boff}\e[36m world\e[0m \e[1m\e[90m# COMMENT\e[0m")"
+  assert_output "$(echo -e "${__bon}\e[36mHello${__boff}\e[36m world${__reset} ${__bon}\e[90m# COMMENT${__reset}")"
   run ekko \#_msg Hello world \#_msg
-  assert_output "$(echo -e "\e[1m\e[36mHello${__boff}\e[36m world\e[0m \e[1m\e[90m# #_msg\e[0m")"
+  assert_output "$(echo -e "${__bon}\e[36mHello${__boff}\e[36m world${__reset} ${__bon}\e[90m# #_msg${__reset}")"
   
   # Ignore the column parameter when it's smaller than the formatted message
   run ekko \#_msg_0 Hello world \#_msg_0
-  assert_output "$(echo -e "\e[1m\e[36mHello${__boff}\e[36m world\e[0m \e[1m\e[90m# #_msg_0\e[0m")"
+  assert_output "$(echo -e "${__bon}\e[36mHello${__boff}\e[36m world${__reset} ${__bon}\e[90m# #_msg_0${__reset}")"
   run ekko \#_msg_1 Hello world \#_msg_1
-  assert_output "$(echo -e "\e[1m\e[36mHello${__boff}\e[36m world\e[0m \e[1m\e[90m# #_msg_1\e[0m")"
+  assert_output "$(echo -e "${__bon}\e[36mHello${__boff}\e[36m world${__reset} ${__bon}\e[90m# #_msg_1${__reset}")"
   run ekko \#_msg_2 Hello world \#_msg_2
-  assert_output "$(echo -e "\e[1m\e[36mHello${__boff}\e[36m world\e[0m \e[1m\e[90m# #_msg_2\e[0m")"
+  assert_output "$(echo -e "${__bon}\e[36mHello${__boff}\e[36m world${__reset} ${__bon}\e[90m# #_msg_2${__reset}")"
   run ekko \#_msg_12 Hello world \#_msg_12
-  assert_output "$(echo -e "\e[1m\e[36mHello${__boff}\e[36m world\e[0m \e[1m\e[90m# #_msg_12\e[0m")"
+  assert_output "$(echo -e "${__bon}\e[36mHello${__boff}\e[36m world${__reset} ${__bon}\e[90m# #_msg_12${__reset}")"
 
   # Also ignore when the column parameter is already aligned 
   # (Hello world is 12 characters plus the space)
   run ekko \#_msg_13 Hello world \#_msg_13
-  assert_output "$(echo -e "\e[1m\e[36mHello${__boff}\e[36m world\e[0m \e[1m\e[90m# #_msg_13\e[0m")"
+  assert_output "$(echo -e "${__bon}\e[36mHello${__boff}\e[36m world${__reset} ${__bon}\e[90m# #_msg_13${__reset}")"
 
   # Start adding spaces when necessary
   run ekko \#_msg_14 Hello world \#_msg_14
-  assert_output "$(echo -e "\e[1m\e[36mHello${__boff}\e[36m world\e[0m  \e[1m\e[90m# #_msg_14\e[0m")"
+  assert_output "$(echo -e "${__bon}\e[36mHello${__boff}\e[36m world${__reset}  ${__bon}\e[90m# #_msg_14${__reset}")"
   run ekko \#_msg_25 Hello world \#_msg_25
-  assert_output "$(echo -e "\e[1m\e[36mHello${__boff}\e[36m world\e[0m             \e[1m\e[90m# #_msg_25\e[0m")"
+  assert_output "$(echo -e "${__bon}\e[36mHello${__boff}\e[36m world${__reset}             ${__bon}\e[90m# #_msg_25${__reset}")"
 }
 
 @test "Check help example'Reading arguments' with missing arguments" {
   run ekko_help_reading_arguments_example
   assert_failure
-  assert_output  "$(echo -e "\e[1m\e[31mMissing argument:${__boff}\e[31m <__x1> (e.g. X1Value)\e[0m")"
+  assert_output  "$(echo -e "${__bon}\e[31mMissing argument:${__boff}\e[31m <__x1> (e.g. X1Value)${__reset}")"
   run ekko_help_reading_arguments_example 1
   assert_failure
-  assert_output  "$(echo -e "\e[1m\e[31mMissing argument:${__boff}\e[31m <__x2> (e.g. X2Value)\e[0m")"
+  assert_output  "$(echo -e "${__bon}\e[31mMissing argument:${__boff}\e[31m <__x2> (e.g. X2Value)${__reset}")"
   run ekko_help_reading_arguments_example 1 2
   assert_failure
-  assert_output  "$(echo -e "\e[1m\e[31mMissing argument:${__boff}\e[31m <__x3> (e.g. X3Value)\e[0m")"
+  assert_output  "$(echo -e "${__bon}\e[31mMissing argument:${__boff}\e[31m <__x3> (e.g. X3Value)${__reset}")"
 }
 
 @test "Check help example 'Reading arguments' with external variable" {
@@ -333,10 +335,10 @@ function ekko_script_go() {
   # This declares the functions
   ekko_help_handling_errors_example
   run works
-  assert_output "$(echo -e "\e[1m\e[32mOK\e[0m")"
+  assert_output "$(echo -e "${__bon}\e[32mOK${__reset}")"
   run -1 broke
   assert_failure
-  assert_output "$(echo -e "\e[1m\e[31mERROR\e[0m")"
+  assert_output "$(echo -e "${__bon}\e[31mERROR${__reset}")"
 }
 
 #----------------------------------------------------------------------------
