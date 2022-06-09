@@ -13,6 +13,8 @@ __msg3=$'\e[95m'
 __error=$'\e[31m'
 __warn=$'\e[33m'
 __ok=$'\e[32m'
+__exec_bg=$'\e[100m'
+
 
 setup() {
 
@@ -149,28 +151,28 @@ function ekko_script_go() {
 @test "Execute a command with quotes" {
   run ekko exec echo XX1
   assert_equal ${#lines[@]} 3
-  assert_line --index 0 "$(echo -e "\e[100mecho XX1${__reset}")"
+  assert_line --index 0 "$(echo -e "${__exec_bg}echo XX1${__reset}")"
   assert_line --index 1 XX1
   assert_line --index 2 --partial 'echo XX1'
   assert_line --index 2 --regexp $'^..95mTIME: ..39m[0-9]+ \([0-9:\.]+\) echo XX1....$'
 
   run ekko exec echo \"XX2\"
   assert_equal ${#lines[@]} 3
-  assert_line --index 0 "$(echo -e "\e[100mecho \"XX2\"${__reset}")"
+  assert_line --index 0 "$(echo -e "${__exec_bg}echo \"XX2\"${__reset}")"
   assert_line --index 1 XX2
   assert_line --index 2 --partial 'echo "XX2"'
   assert_line --index 2 --regexp $'^..95mTIME: ..39m[0-9]+ \([0-9:\.]+\) echo "XX2"....$'
 
   run ekko exec echo \\\"XX3\\\"
   assert_equal ${#lines[@]} 3
-  assert_line --index 0 "$(echo -e "\e[100mecho \\\"XX3\\\"${__reset}")"
+  assert_line --index 0 "$(echo -e "${__exec_bg}echo \\\"XX3\\\"${__reset}")"
   assert_line --index 1 $'"XX3"'
   assert_line --index 2 --partial 'echo "XX3"'
   assert_line --index 2 --regexp $'^..95mTIME: ..39m[0-9]+ \([0-9:\.]+\) echo "XX3"....$'
 
   run ekko exec echo "\\\"XX4\\\""
   assert_equal ${#lines[@]} 3
-  assert_line --index 0 "$(echo -e "\e[100mecho \\\"XX4\\\"${__reset}")"
+  assert_line --index 0 "$(echo -e "${__exec_bg}echo \\\"XX4\\\"${__reset}")"
   assert_line --index 1 $'"XX4"'
   assert_line --index 2 --partial 'echo "XX4"'
   assert_line --index 2 --regexp $'^..95mTIME: ..39m[0-9]+ \([0-9:\.]+\) echo "XX4"....$'
@@ -179,28 +181,28 @@ function ekko_script_go() {
 @test "Execute a command with quotes and spaces" {
   run ekko exec echo X X1
   assert_equal ${#lines[@]} 3
-  assert_line --index 0 "$(echo -e "\e[100mecho X X1${__reset}")"
+  assert_line --index 0 "$(echo -e "${__exec_bg}echo X X1${__reset}")"
   assert_line --index 1 "X X1"
   assert_line --index 2 --partial 'echo X X1'
   assert_line --index 2 --regexp $'^..95mTIME: ..39m[0-9]+ \([0-9:\.]+\) echo X X1....$'
 
   run ekko exec echo \"X X2\"
   assert_equal ${#lines[@]} 3
-  assert_line --index 0 "$(echo -e "\e[100mecho \"X X2\"${__reset}")"
+  assert_line --index 0 "$(echo -e "${__exec_bg}echo \"X X2\"${__reset}")"
   assert_line --index 1 "X X2"
   assert_line --index 2 --partial 'echo "X X2"'
   assert_line --index 2 --regexp $'^..95mTIME: ..39m[0-9]+ \([0-9:\.]+\) echo "X X2"....$'
 
   run ekko exec echo \\\"X X3\\\"
   assert_equal ${#lines[@]} 3
-  assert_line --index 0 "$(echo -e "\e[100mecho \\\"X X3\\\"${__reset}")"
+  assert_line --index 0 "$(echo -e "${__exec_bg}echo \\\"X X3\\\"${__reset}")"
   assert_line --index 1 '"X X3"'
   assert_line --index 2 --partial 'echo "X X3"'
   assert_line --index 2 --regexp $'^..95mTIME: ..39m[0-9]+ \([0-9:\.]+\) echo "X X3"....$'
 
   run ekko exec echo "\\\"X  X4\\\""
   assert_equal ${#lines[@]} 3
-  assert_line --index 0 "$(echo -e "\e[100mecho \\\"X  X4\\\"${__reset}")"
+  assert_line --index 0 "$(echo -e "${__exec_bg}echo \\\"X  X4\\\"${__reset}")"
   assert_line --index 1 '"X X4"'
   assert_line --index 2 --partial 'echo "X  X4"'
   assert_line --index 2 --regexp $'^..95mTIME: ..39m[0-9]+ \([0-9:\.]+\) echo "X  X4"....$'
