@@ -154,9 +154,9 @@ function ekko_help_ansi() {
 function ekko_help_ansi256() {
   for fgbg in 38 48; do # Foreground / Background
     ekko banner_msg $'echo -e "\\\\e['"$fgbg"';5;COLm Reset"'
-    for color in {0..255}; do # Colors
-      printf "\e[${fgbg};5;%sm  %3s  \e[0m" "$color" "$color"
-      if ((color % 8 == 7)); then
+    for colour in {0..255}; do # Colors
+      printf "\e[${fgbg};5;%sm  %3s  \e[0m" "$colour" "$colour"
+      if ((colour % 8 == 7)); then
         echo
       fi
     done
