@@ -23,15 +23,14 @@ Usage
 ekko [MARKER] This is my message!
 ```
 
-The simple markers assign some colour and bold to the message:
+The simple markers assign some colour and bold to the message.  The first argument is set to bold and attached back to the rest.
+
 * __`msg`__ or __`msg1`__, __`msg2`__, __`msg3`__: Information (cyan, blue, magenta)
 * __`error`__: Error (red)
 * __`warn`__: Warning (yellow)
 * __`ok`__: Success (green)
-* __`bold`__ or __`b`__: Other (no colour change)
+* __`bold`__ or __`b`__: Only sets bold with no colour change
 * Adding __`banner_`__ prefix to a simple marker fills the rest of the line with `----`
-
-The first argument is set to bold automatically and attached back to the rest.
 
 ```
 ekko banner_msg "Step 1:" Reticulating splines
@@ -39,7 +38,20 @@ ekko warn "" A message with no bold.
 ekko ok Success!
 ```
 
-Some other markers generate different, preformatted output:
+Comments are entirely in bold and prepended with a `#`.
+
+* __`comment`__ or __`\#`__: Adds a `#`, and sets the entire line to bold grey.
+* Adding __`comment_`__ prefix to a simple marker adds the last argument as a `# comment`
+* A __`comment_`__ prefix and __`_<NN>`__ suffix aligns the comments at column `<NN>`
+
+```
+ekko comment_warn_35 Attention: possible data loss "Make sure you've specified the right"
+ekko comment_b_35 sudo mkfs -t vfat /dev/sdX1 "partition using lsblk"
+ekko comment Follow the prompts here
+```
+
+Some other markers generate different, preformatted output.
+
 * __`kv`__ Key/Value: prints the first word of the message right-aligned to column 30 (violet) followed by the rest (default colour).
 * __`kv_`<NN>__ As above, with the first argument right aligned to column <NN>.
 * __`export`__ prints an export line with the first word of the message.  If there is more to the message text, the rest is used as the value.  Otherwise, the actual environment variable corresponding to the first work is printed. 
@@ -54,6 +66,7 @@ ekko env_not_null PORT 8080
 ```
 
 You can also use the __`exec`__ or __`no-exec`__ markers to execute other commands.
+
 * __`exec`__ prints the message text (grey background) before trying to execute it as a command, and writes the time it took afterwards.  The `EKKO_LAST_EXEC_TIME` is set to this value in milliseconds.  The return code is the same as the command.
 * __`no-exec`__ just prints the command in the same style without trying to execute it.
 * Commands are executed with `eval $'bash -c "'$@'"'`.  Simple commands should work, but you'll probably be unhappy with aliases and non-exported functions!
@@ -63,7 +76,8 @@ ekko exec find /tmp
 ekko no-exec find /tmp
 ```
 
-If you are on a system with the `notify-send` command (like [gnome][notify-send]), you can execute two types of popups:
+If you are on a system with the `notify-send` command (like [gnome][notify-send]), you can execute two types of popups.
+
 * __`popup`__ Sends the message to the notification center directly.
 * __`remind`__ Starts a background process that sleeps for `N` seconds before displaying.  If the argument is non-numeric, try to parse it into seconds using the linux `date` command.
 
