@@ -367,9 +367,9 @@ function __ekko_base_banner() {
   local __first=$1 && shift
   local __rest="$*"
 
-  local __length=$(($(tput cols) - ${#__first} - ${#__rest}))
-  [[ -n "$__first" ]] && __length=$((__length - 1))
-  [[ -n "$__rest" ]] && __length=$((__length - 1))
+  local __length=$(( $(tput cols) - $(echo "$__first" | ekko_uncolour | wc -c) - $(echo "$__rest" | ekko_uncolour | wc -c)))
+  [[ -z "$__first" ]] && __length=$((__length + 1))
+  [[ -z "$__rest" ]] && __length=$((__length + 1))
 
   local __line
   __line=$(printf "%${__length}s" | tr ' ' '-')
