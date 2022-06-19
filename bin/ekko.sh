@@ -371,15 +371,20 @@ function __ekko_base_banner() {
   [[ -z "$__first" ]] && __length=$((__length + 1))
   [[ -z "$__rest" ]] && __length=$((__length + 1))
 
-  local __line
-  __line=$(printf "%${__length}s" | tr ' ' '-')
+  if [ $__length -gt 1 ]; then
+    local __line
+    __line=$(printf "%${__length}s" | tr ' ' '-')
 
-  if [[ -z $__first && -n $__first ]]; then
-    ekko "$__marker" "" "$__rest $__line"
-  elif [[ -z $__rest ]]; then
-    ekko "$__marker" "$__first" "$__line"
+    if [[ -z $__first && -n $__first ]]; then
+      ekko "$__marker" "" "$__rest $__line"
+    elif [[ -z $__rest ]]; then
+      ekko "$__marker" "$__first" "$__line"
+    else
+      ekko "$__marker" "$__first" "$__rest $__line"
+    fi
   else
-    ekko "$__marker" "$__first" "$__rest $__line"
+    ekko "$__marker" "$__first" "$__rest"
+    ekko "banner_$__marker"
   fi
 }
 

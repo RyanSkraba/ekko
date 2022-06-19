@@ -256,9 +256,11 @@ function ekko_script_go() {
     echo 25
   }
 
-  # A message that overruns its size (TODO)
+  # A message that overruns its size
   run ekko banner_msg "Hello world and all who inhabit it"
-  assert_output "$(echo -e "${__b}${__msg1}Hello world and all who inhabit it${__boff}${__msg1} ----------${__reset}")"
+  assert_equal ${#lines[@]} 2
+  assert_line --index 0 "$(echo -e "${__b}${__msg1}Hello world and all who inhabit it${__reset}")"
+  assert_line --index 1 "$(echo -e "${__b}${__msg1}${__boff}${__msg1}-------------------------${__reset}")"
 }
 
 @test "Echo keys and values" {
