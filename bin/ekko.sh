@@ -364,27 +364,25 @@ function __ekko_base_kv() {
 
 function __ekko_base_banner() {
   local __marker=$1 && shift
-  local __first=$1 && shift
-  local __rest="$*"
+  __marker="${__marker#*_}"
+  local __args=("$@")
 
-  local __length=$(( $(tput cols) - $(echo "$__first" | ekko_uncolour | wc -c) - $(echo "$__rest" | ekko_uncolour | wc -c)))
-  [[ -z "$__first" ]] && __length=$((__length + 1))
-  [[ -z "$__rest" ]] && __length=$((__length + 1))
+  # Format the message without the comment
+  local __formatted_msg
+  __formatted_msg=$(ekko "$__marker" "${__args[@]}")
+
+    # Calculate the rest of the line length
+  local __length=$(( $(tput cols) - $(echo -n "$__formatted_msg" | ekko_uncolour | wc -c)))
+  local __line
 
   if [ $__length -gt 1 ]; then
-    local __line
+    [ $__length -lt "$(tput cols)" ] && __length=$((__length - 1))
     __line=$(printf "%${__length}s" | tr ' ' '-')
-
-    if [[ -z $__first && -n $__first ]]; then
-      ekko "$__marker" "" "$__rest $__line"
-    elif [[ -z $__rest ]]; then
-      ekko "$__marker" "$__first" "$__line"
-    else
-      ekko "$__marker" "$__first" "$__rest $__line"
-    fi
+    ekko "$__marker" "${__args[@]}" "$__line"
   else
-    ekko "$__marker" "$__first" "$__rest"
-    ekko "banner_$__marker"
+    __line=$(printf "%$(tput cols)s" | tr ' ' '-')
+    echo "$__formatted_msg"
+    ekko "$__marker" "" "$__line"
   fi
 }
 

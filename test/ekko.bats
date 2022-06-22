@@ -256,10 +256,40 @@ function ekko_script_go() {
     echo 25
   }
 
-  # A message that overruns its size
-  run ekko banner_msg "Hello world and all who inhabit it"
+  # No text at all gives it as a bold line
+  run ekko banner_msg
+  assert_output "$(echo -e "${__b}${__msg1}-------------------------${__reset}")"
+
+  # An empty text is a plain line
+  run ekko banner_msg ""
+  assert_output "$(echo -e "${__b}${__msg1}${__boff}${__msg1}-------------------------${__reset}")"
+  # TODO
+  # run ekko banner_msg "" ""
+
+  # Three less than the number of columns
+  run ekko banner_msg "abcdefghijklmnopqrstuv"
+  assert_output "$(echo -e "${__b}${__msg1}abcdefghijklmnopqrstuv${__boff}${__msg1} --${__reset}")"
+
+  # Two less than the number of columns
+  run ekko banner_msg "abcdefghijklmnopqrstuvw"
+  assert_output "$(echo -e "${__b}${__msg1}abcdefghijklmnopqrstuvw${__boff}${__msg1} -${__reset}")"
+
+  # One less than the number of columns
+  run ekko banner_msg "abcdefghijklmnopqrstuvwx"
   assert_equal ${#lines[@]} 2
-  assert_line --index 0 "$(echo -e "${__b}${__msg1}Hello world and all who inhabit it${__reset}")"
+  assert_line --index 0 "$(echo -e "${__b}${__msg1}abcdefghijklmnopqrstuvwx${__reset}")"
+  assert_line --index 1 "$(echo -e "${__b}${__msg1}${__boff}${__msg1}-------------------------${__reset}")"
+
+  # The exact number of columns
+  run ekko banner_msg "abcdefghijklmnopqrstuvwxy"
+  assert_equal ${#lines[@]} 2
+  assert_line --index 0 "$(echo -e "${__b}${__msg1}abcdefghijklmnopqrstuvwxy${__reset}")"
+  assert_line --index 1 "$(echo -e "${__b}${__msg1}${__boff}${__msg1}-------------------------${__reset}")"
+
+  # One more than the number of columns
+  run ekko banner_msg "abcdefghijklmnopqrstuvwxyz"
+  assert_equal ${#lines[@]} 2
+  assert_line --index 0 "$(echo -e "${__b}${__msg1}abcdefghijklmnopqrstuvwxyz${__reset}")"
   assert_line --index 1 "$(echo -e "${__b}${__msg1}${__boff}${__msg1}-------------------------${__reset}")"
 }
 
