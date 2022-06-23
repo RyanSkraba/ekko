@@ -200,26 +200,27 @@ function ekko() {
   bold | b)
     __ekko_base_hilite_first "\e[1m" "\e[22m" "$@"
     ;;
-  banner_msg | banner_msg1)
-    __ekko_base_banner msg "$@"
-    ;;
-  banner_msg2)
-    __ekko_base_banner msg2 "$@"
-    ;;
-  banner_msg3)
-    __ekko_base_banner msg3 "$@"
-    ;;
-  banner_error)
-    __ekko_base_banner error "$@"
-    ;;
-  banner_warn)
-    __ekko_base_banner warn "$@"
-    ;;
-  banner_ok)
-    __ekko_base_banner ok "$@"
-    ;;
-  banner_b | banner_bold)
-    __ekko_base_banner b "$@"
+  banner_*)
+    __marker="${__marker#banner_}"
+    local __args=("$@")
+
+    # Format the message without the comment
+    local __formatted_msg
+    __formatted_msg=$(ekko "$__marker" "${__args[@]}")
+
+      # Calculate the rest of the line length
+    local __length=$(( $(tput cols) - $(echo -n "$__formatted_msg" | ekko_uncolour | wc -c)))
+    local __line
+
+    if [ $__length -gt 1 ]; then
+      [ $__length -lt "$(tput cols)" ] && __length=$((__length - 1))
+      __line=$(printf "%${__length}s" | tr ' ' '-')
+      ekko "$__marker" "${__args[@]}" "$__line"
+    else
+      __line=$(printf "%$(tput cols)s" | tr ' ' '-')
+      echo "$__formatted_msg"
+      ekko "$__marker" "" "$__line"
+    fi
     ;;
   kv)
     __ekko_base_kv 30 "\e[95m" "\e[39m" "$@"
@@ -362,28 +363,4 @@ function __ekko_base_kv() {
     printf "${__key_code}%*s: ${__value_code}$*\e[0m\n" "$__width" "$__rest"
 }
 
-function __ekko_base_banner() {
-  local __marker=$1 && shift
-  __marker="${__marker#*_}"
-  local __args=("$@")
-
-  # Format the message without the comment
-  local __formatted_msg
-  __formatted_msg=$(ekko "$__marker" "${__args[@]}")
-
-    # Calculate the rest of the line length
-  local __length=$(( $(tput cols) - $(echo -n "$__formatted_msg" | ekko_uncolour | wc -c)))
-  local __line
-
-  if [ $__length -gt 1 ]; then
-    [ $__length -lt "$(tput cols)" ] && __length=$((__length - 1))
-    __line=$(printf "%${__length}s" | tr ' ' '-')
-    ekko "$__marker" "${__args[@]}" "$__line"
-  else
-    __line=$(printf "%$(tput cols)s" | tr ' ' '-')
-    echo "$__formatted_msg"
-    ekko "$__marker" "" "$__line"
-  fi
-}
-
-export -f ekko ekko_uncolour __ekko_base_hilite_first __ekko_base_kv __ekko_base_banner ekko_exec_after
+export -f ekko ekko_uncolour __ekko_base_hilite_first __ekko_base_kv ekko_exec_after
