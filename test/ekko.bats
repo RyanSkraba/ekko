@@ -302,9 +302,8 @@ function ekko_script_go() {
   assert_output "$(echo -e "${__k}Hello: ${__v}kv_1${__reset}")"
   run ekko kv_2 Hello kv_2
   assert_output "$(echo -e "${__k}Hello: ${__v}kv_2${__reset}")"
-  # TODO: Why does 5 have a space?
-  run ekko kv_6 Hello kv_5
-  assert_output "$(echo -e "${__k} Hello: ${__v}kv_5${__reset}")"
+  run ekko kv_5 Hello kv_5
+  assert_output "$(echo -e "${__k}Hello: ${__v}kv_5${__reset}")"
   run ekko kv_6 Hello kv_6
   assert_output "$(echo -e "${__k} Hello: ${__v}kv_6${__reset}")"
   run ekko kv_7 Hello kv_7
