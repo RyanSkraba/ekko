@@ -1,8 +1,56 @@
-= `ekko` - Simple bash `echo` replacement with colour semantics.
+= `ekko` - Simple bash `echo` replacement with colour
 
 Bored of tiresome, unreadable `echo` in your bash scripts? Replace them with `ekko` to bring a bit of colour to your terminal!
 
 Add it to your `.bashrc` and start generating simple ANSI coloured output!
+
+[cols="3a,2",frame=none,grid=none]
+|====
+|
+*Boring echo*
+|
+|
+// boring_echo
+[source,bash]
+----
+echo ATTENTION!! shutting down nodes may cause data loss -----
+echo \# Please ensure that backups have finished
+echo \# Nodes will be drained in order
+echo Primary: nodeA.example.com
+echo Secondaries: nodeB.example.com
+echo "    nodeC.example.com"
+echo "    nodeD.example.com"
+echo Logs: log.example.com
+echo export WORKING_HOME=$WORKING_HOME \# Use local storage directory
+echo export DRYRUN= \# If set, show commands without executing
+echo sudo node-killer --drain \&\& \# Blocks until confirmation received
+echo "  sudo" node-killer --force \# Kills all nodes permanently
+----
+|
+image:./doc/boring_echo.svg[Boring, tedious, unreadable echo]
+|
+*Thrilling ekko*
+|
+|
+// thrilling_ekko
+[source,bash]
+----
+ekko banner_error "ATTENTION" shutting down nodes may cause data loss
+ekko \# Please ensure that backups have finished
+ekko \# Nodes will be drained in order
+ekko kv_15 Primary nodeA.example.com
+ekko kv_15 Secondaries nodeB.example.com
+ekko kv_15 "" nodeC.example.com
+ekko kv_15 "" nodeD.example.com
+ekko kv_15 Logs log.example.com
+ekko comment_export_35 WORKING_HOME "Use local storage directory"
+ekko comment_export_35 DRYRUN "" "If set, show commands without executing."
+ekko comment_warn_35 sudo node-killer --drain \&\& "Blocks until confirmation received"
+ekko comment_warn_35 "  sudo" node-killer --force "Kills all nodes permanently"
+----
+|
+image:./doc/thrilling_ekko.svg[Thrilling, vibrant, readable ekko]
+|====
 
 ----
 source ./bin/ekko.sh
