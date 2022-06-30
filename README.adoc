@@ -2,7 +2,7 @@
 
 Bored of tiresome, unreadable `echo` in your bash scripts? Replace them with `ekko` to bring a bit of colour to your terminal!
 
-Add it to your `.bashrc` and start generating simple ANSI coloured output!
+Just clone, `source ./bin/ekko.sh` in your `.bashrc` and start generating simple ANSI coloured output!
 
 [cols="3a,2",frame=none,grid=none]
 |====
@@ -23,7 +23,7 @@ echo "    nodeD.example.com"
 echo Logs: log.example.com
 echo export WORKING_HOME=$WORKING_HOME \# Use local storage directory
 echo export DRYRUN= \# If set, show commands without executing
-echo sudo node-killer --drain \&\& \# Blocks until confirmation received
+echo sudo node-killer --drain \&\& \# Blocks until drained
 echo "  sudo" node-killer --force \# Kills all nodes permanently
 ----
 |
@@ -43,23 +43,26 @@ ekko kv_15 Secondaries nodeB.example.com
 ekko kv_15 "" nodeC.example.com
 ekko kv_15 "" nodeD.example.com
 ekko kv_15 Logs log.example.com
-ekko comment_export_35 WORKING_HOME "Use local storage directory"
-ekko comment_export_35 DRYRUN "" "If set, show commands without executing."
-ekko comment_warn_35 sudo node-killer --drain \&\& "Blocks until confirmation received"
-ekko comment_warn_35 "  sudo" node-killer --force "Kills all nodes permanently"
+ekko \#_export_35 WORKING_HOME "Use local storage directory"
+ekko \#_export_35 DRYRUN "" "If set, show commands without executing."
+ekko \#_warn_35 sudo node-killer --drain \&\& "Blocks until drained"
+ekko \#_warn_35 "  sudo" node-killer --force "Kills all nodes permanently"
 ----
 |
 image:./doc/thrilling_ekko.svg[Thrilling, vibrant, readable ekko]
 |====
 
-----
-source ./bin/ekko.sh
-ekko_help
-----
+== Built-in help
 
+[cols="2a,2a",frame=none,grid=none]
+|====
+|
+`ekko_help`
 image:./doc/ekko_help.svg[ekko_help terminal capture]
-
+|
+`ekko_help_examples`
 image:./doc/ekko_help_examples.svg[ekko_help_examples terminal capture]
+|====
 
 == Usage
 
@@ -76,12 +79,21 @@ The simple markers assign some colour and bold to the message. The first argumen
 * *`bold`* or *`b`*: Only sets bold with no colour change
 * Adding *`banner_`* prefix to a simple marker fills the rest of the line with `----`
 
-// Simple messages
+[cols="2a,2",frame=none,grid=none]
+|====
+|
+// ekko_help_1_marker
+[source,bash]
 ----
 ekko banner_msg "Step 1:" Reticulating splines
 ekko warn "" A message with no bold.
 ekko ok Success!
+ekko b "Normal text" with the first token bold
+ekko Normal text yo
 ----
+|
+image:./doc/ekko_help_1_marker.svg[ekko simple output examples]
+|====
 
 Comments are entirely in bold and prepended with a `#`.
 
@@ -89,12 +101,19 @@ Comments are entirely in bold and prepended with a `#`.
 * Adding *`comment_`* prefix to a simple marker adds the last argument as a `# comment`
 * A *`comment_`* prefix and *`_&lt;NN&gt;`* suffix aligns the comments at column `&lt;NN&gt;`
 
-// Comments
+[cols="2a,2",frame=none,grid=none]
+|====
+|
+// ekko_help_2_comment
+[source,bash]
 ----
-ekko comment_warn_35 Attention: possible data loss "Make sure you've specified the right"
-ekko comment_b_35 sudo mkfs -t vfat /dev/sdX1 "partition using lsblk"
+ekko comment_warn_35 Attention: possible data loss "Check the"
+ekko comment_b_35 sudo mkfs -t vfat /dev/sdX1 "partition"
 ekko comment Follow the prompts here
 ----
+|
+image:./doc/ekko_help_2_comment.svg[ekko comment examples]
+|====
 
 Some other markers generate different, preformatted output.
 
@@ -103,7 +122,11 @@ Some other markers generate different, preformatted output.
 * *`export`* prints an export line with the first word of the message. If there is more to the message text, the rest is used as the value. Otherwise, the actual environment variable corresponding to the first work is printed.
 * *`env_not_null`* verifies that the first word of the message is set as an environment variable and prints nothing if true. If false, an error message is printed using the rest of the message text and the return code `$?` is set to `1` (error).
 
-// Other
+[cols="2a,2",frame=none,grid=none]
+|====
+|
+// ekko_help_3_other
+[source,bash]
 ----
 ekko kv host $HOSTNAME
 ekko kv port 8080
@@ -111,18 +134,30 @@ ekko export HOSTNAME
 ekko export PORT 80 # Does not set the environment variable!
 ekko env_not_null PORT 8080
 ----
+|
+image:./doc/ekko_help_3_other.svg[ekko other examples]
+|====
+
 
 You can also use the *`exec`* or *`no-exec`* markers to execute other commands.
 
 * *`exec`* prints the message text (grey background) before trying to execute it as a command, and writes the time it took afterwards. The `EKKO_LAST_EXEC_TIME` is set to this value in milliseconds. The return code is the same as the command.
 * *`no-exec`* just prints the command in the same style without trying to execute it.
-* Commands are executed with `eval $&#39;bash -c &quot;&#39;$@&#39;&quot;&#39;`. Simple commands should work, but you'll probably be unhappy with aliases and non-exported functions!
+* Commands are executed with `eval $&#39;bash -c &quot;&#39;$@&#39;&quot;&#39;`. Simple commands should work, but you will probably be unhappy with aliases and non-exported functions!
 
-// Exec
+[cols="2a,2",frame=none,grid=none]
+|====
+|
+// ekko_help_4_exec
+[source,bash]
 ----
 ekko exec find /tmp
 ekko no-exec find /tmp
 ----
+|
+image:./doc/ekko_help_4_exec.svg[ekko exec examples]
+|====
+
 
 If you are on a system with the `notify-send` command (like https://developer.gnome.org/notification-spec/[gnome]), you can execute two types of popups.
 
