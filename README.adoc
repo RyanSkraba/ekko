@@ -118,7 +118,7 @@ image:./doc/ekko_help_2_comment.svg[ekko comment examples]
 Some other markers generate different, preformatted output.
 
 * *`kv`* Key/Value: prints the first word of the message right-aligned to column 30 (violet) followed by the rest (default colour).
-* *`kv_`<NN>* As above, with the first argument right aligned to column <NN>.
+* *`kv_<NN>`* As above, with the first argument right aligned to column `<NN>`.
 * *`export`* prints an export line with the first word of the message. If there is more to the message text, the rest is used as the value. Otherwise, the actual environment variable corresponding to the first work is printed.
 * *`env_not_null`* verifies that the first word of the message is set as an environment variable and prints nothing if true. If false, an error message is printed using the rest of the message text and the return code `$?` is set to `1` (error).
 
@@ -143,7 +143,7 @@ You can also use the *`exec`* or *`no-exec`* markers to execute other commands.
 
 * *`exec`* prints the message text (grey background) before trying to execute it as a command, and writes the time it took afterwards. The `EKKO_LAST_EXEC_TIME` is set to this value in milliseconds. The return code is the same as the command.
 * *`no-exec`* just prints the command in the same style without trying to execute it.
-* Commands are executed with `eval $&#39;bash -c &quot;&#39;$@&#39;&quot;&#39;`. Simple commands should work, but you will probably be unhappy with aliases and non-exported functions!
+* Commands are executed with `bash -c &quot;$*&quot;`. Simple commands should work, but you will probably be unhappy with aliases and non-exported functions!
 
 [cols="2a,2",frame=none,grid=none]
 |====
