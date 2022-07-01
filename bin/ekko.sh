@@ -75,17 +75,16 @@ function ekko_help() {
 
 function ekko_help_examples() {
   ekko banner_msg "Reading arguments"
-  ekko ok $'  # Read the arguments from the command line'
-  ekko b "" $'  local __x1=$1 && shift
-  local __x2=$1 && shift
-  local __x3=${__x3:-$1} && shift
-  local __x4=$1 && shift # optional
-  [ -z "$__x4" ] && __x4=X4Value'
+  ekko \#_b " " 'Read the arguments from the command line'
+  ekko b " " $'local __x1=$1 && shift'
+  ekko b " " $'local __x2=$1 && shift'
+  ekko \#_b " " $'local __x3=${__x3:-$1} && shift' "Can be set as environment variable"
+  ekko \#_b_35 " " $'local __x4=${1:-X4Value} && shift' Optional
   ekko b $'  ekko env_not_null __x1 "X1Value" \
       && ekko env_not_null __x2 "X2Value" \
       && ekko env_not_null __x3 "X3Value" \
       || return $?'
-  ekko ok $'  # At this point, the argument testing succeeded.'
+  ekko \#_b " " 'At this point, the argument testing succeeded.'
   ekko
 
   ekko banner_msg "Handling errors"
