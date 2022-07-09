@@ -28,7 +28,7 @@ setup() {
   # Tests the Reading arguments command from the help script
   eval "function ekko_help_reading_arguments_example() {
     $(ekko_help_examples | ekko_uncolour | sed -n -r -e '/^Reading arguments -----/,/^$/p' | sed $'1d')
-    echo \$__x1 \$__x2 \$__x3 \$__x4 
+    echo :\$__x1: :\$__x2: :\$__x3: :\$__x4: :\$__x5:
   }"
 
   # Tests the Handling errors command from the help script
@@ -345,7 +345,7 @@ function ekko_script_go() {
   assert_output "$(echo -e "${__b}${__msg1}Hello${__boff}${__msg1} world${__reset}             ${__b}${__c}# #_msg_25${__reset}")"
 }
 
-@test "Check help example'Reading arguments' with missing arguments" {
+@test "Check help example 'Reading arguments' missing mandatory arguments" {
   run ekko_help_reading_arguments_example
   assert_failure
   assert_output  "$(echo -e "${__b}${__error}Missing argument:${__boff}${__error} <__x1> (e.g. X1Value)${__reset}")"
@@ -357,18 +357,50 @@ function ekko_script_go() {
   assert_output  "$(echo -e "${__b}${__error}Missing argument:${__boff}${__error} <__x3> (e.g. X3Value)${__reset}")"
 }
 
+@test "Check help example 'Reading arguments' optional arguments" {
+  run ekko_help_reading_arguments_example 1 2 3
+  assert_output ":1: :2: :3: :X4Value: :X5Value:"
+  run ekko_help_reading_arguments_example 1 2 3 ""
+  assert_output ":1: :2: :3: :: :X5Value:"
+  run ekko_help_reading_arguments_example 1 2 3 "" ""
+  assert_output ":1: :2: :3: :: ::"
+  run ekko_help_reading_arguments_example 1 2 3 4
+  assert_output ":1: :2: :3: :4: :X5Value:"
+  run ekko_help_reading_arguments_example 1 2 3 4 5
+  assert_output ":1: :2: :3: :4: :5:"
+
+  __x5=99
+  run ekko_help_reading_arguments_example 1 2 3
+  assert_output ":1: :2: :3: :X4Value: :99:"
+  run ekko_help_reading_arguments_example 1 2 3 4
+  assert_output ":1: :2: :3: :4: :99:"
+  run ekko_help_reading_arguments_example 1 2 3 4 5
+  assert_output ":1: :2: :3: :4: :99:"
+
+  __x5=
+  run ekko_help_reading_arguments_example 1 2 3
+  assert_output ":1: :2: :3: :X4Value: ::"
+  run ekko_help_reading_arguments_example 1 2 3 4
+  assert_output ":1: :2: :3: :4: ::"
+  run ekko_help_reading_arguments_example 1 2 3 4 5
+  assert_output ":1: :2: :3: :4: ::"
+
+  unset __x5
+  run ekko_help_reading_arguments_example 1 2 3 4
+}
+
 @test "Check help example 'Reading arguments' with external variable" {
   run ekko_help_reading_arguments_example 1 2 3 4
-  assert_output "1 2 3 4"
+  assert_output ":1: :2: :3: :4: :X5Value:"
   __x3=99
   run ekko_help_reading_arguments_example 1 2 3 4
-  assert_output "1 2 99 4"
+  assert_output ":1: :2: :99: :4: :X5Value:"
   __x3=
   run ekko_help_reading_arguments_example 1 2 3 4
-  assert_output "1 2 3 4"
+  assert_output ":1: :2: :3: :4: :X5Value:"
   unset __x3
   run ekko_help_reading_arguments_example 1 2 3 4
-  assert_output "1 2 3 4"
+  assert_output ":1: :2: :3: :4: :X5Value:"
 }
 
 @test "Check help example 'Handling errors'" {

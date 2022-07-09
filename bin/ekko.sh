@@ -78,8 +78,9 @@ function ekko_help_examples() {
   ekko \#_b " " 'Read the arguments from the command line'
   ekko b " " $'local __x1=$1 && shift'
   ekko b " " $'local __x2=$1 && shift'
-  ekko \#_b " " $'local __x3=${__x3:-$1} && shift' "Can be set as environment variable"
-  ekko \#_b_35 " " $'local __x4=${1:-X4Value} && shift' Optional
+  ekko \#_b_37 " " $'local __x3=${__x3:-$1} && shift' "Mandatory but can be supplied by env"
+  ekko \#_b_37 " " $'local __x4=${1-X4Value} && shift' Optional
+  ekko \#_b_37 " " $'local __x5=${__x5-${1-X5Value}} && shift' "Optional, can be supplied by env"
   ekko b $'  ekko env_not_null __x1 "X1Value" \
       && ekko env_not_null __x2 "X2Value" \
       && ekko env_not_null __x3 "X3Value" \
