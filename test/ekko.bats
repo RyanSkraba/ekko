@@ -308,6 +308,32 @@ function ekko_script_go() {
   assert_output "$(echo -e "${__k} Hello: ${__v}kv_6${__reset}")"
   run ekko kv_7 Hello kv_7
   assert_output "$(echo -e "${__k}  Hello: ${__v}kv_7${__reset}")"
+  run ekko kv " " kv
+  assert_output "$(echo -e "${__k}                              : ${__v}kv${__reset}")"
+  run ekko kv "" kv
+  assert_output "$(echo -e "${__k}                                ${__v}kv${__reset}")"
+}
+
+@test "Echo keys and values lists" {
+  run ekko kvlist Hello kvlist
+  assert_output "$(echo -e "${__k}Hello: ${__v}kvlist${__reset}")"
+  run ekko kvlist Hello kvlist "How are" you
+  assert_equal ${#lines[@]} 2
+  assert_line --index 0 "$(echo -e "${__k}  Hello: ${__v}kvlist${__reset}")"
+  assert_line --index 1 "$(echo -e "${__k}How are: ${__v}you${__reset}")"
+  run ekko kvlist Hello kvlist "How are" you today
+  assert_equal ${#lines[@]} 3
+  assert_line --index 0 "$(echo -e "${__k}  Hello: ${__v}kvlist${__reset}")"
+  assert_line --index 1 "$(echo -e "${__k}How are: ${__v}you${__reset}")"
+  assert_line --index 2 "$(echo -e "${__k}  today: ${__v}${__reset}")"
+  run ekko kvlist a b c
+  assert_equal ${#lines[@]} 2
+  assert_line --index 0 "$(echo -e "${__k}    a: ${__v}b${__reset}")"
+  assert_line --index 1 "$(echo -e "${__k}    c: ${__v}${__reset}")"
+  run ekko kvlist a b "" c
+  assert_equal ${#lines[@]} 2
+  assert_line --index 0 "$(echo -e "${__k}    a: ${__v}b${__reset}")"
+  assert_line --index 1 "$(echo -e "${__k}       ${__v}c${__reset}")"
 }
 
 @test "Echo test comments" {
