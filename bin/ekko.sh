@@ -208,8 +208,8 @@ function ekko() {
     local __formatted_msg
     __formatted_msg=$(ekko "$__marker" "${__args[@]}")
 
-      # Calculate the rest of the line length
-    local __length=$(( $(tput cols) - $(echo -n "$__formatted_msg" | ekko_uncolour | wc -c)))
+    # Calculate the rest of the line length
+    local __length=$(($(tput cols) - $(echo -n "$__formatted_msg" | ekko_uncolour | wc -c)))
     local __line
 
     if [ $__length -gt 1 ]; then
@@ -221,6 +221,24 @@ function ekko() {
       echo "$__formatted_msg"
       ekko "$__marker" "" "$__line"
     fi
+    ;;
+  kvlist)
+    local __kvs=("$@")
+
+    # Pass over all the arguments once to get the longest key (min 5)
+    local __key_length=5
+    for ((i = 0; i < ${#__kvs[@]}; i = i + 2)); do
+      local __key
+      __key="${__kvs[$i]}"
+             if [ ${#__key} -gt $__key_length ]; then
+         __key_length=${#__key}
+       fi
+    done
+
+    # Print out the arguments according to that longest key
+    for ((i = 0; i < ${#__kvs[@]}; i = i + 2)); do
+      ekko kv_"$__key_length" "${__kvs[$i]}" "${__kvs[$((i + 1))]}"
+    done
     ;;
   kv)
     __ekko_base_kv 30 "\e[95m" "\e[39m" "$@"
