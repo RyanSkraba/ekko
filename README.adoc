@@ -38,11 +38,11 @@ image:./doc/boring_echo.svg[Boring, tedious, unreadable echo]
 ekko banner_error "ATTENTION" shutting down nodes may cause data loss
 ekko \# Please ensure that backups have finished
 ekko \# Nodes will be drained in order
-ekko kv_15 Primary nodeA.example.com
-ekko kv_15 Secondaries nodeB.example.com
-ekko kv_15 "" nodeC.example.com
-ekko kv_15 "" nodeD.example.com
-ekko kv_15 Logs log.example.com
+ekko kvs Primary nodeA.example.com \
+    Secondaries nodeB.example.com \
+    "" nodeC.example.com \
+    "" nodeD.example.com \
+    Logs log.example.com
 ekko \#_export_35 WORKING_HOME "Use local storage directory"
 ekko \#_export_35 DRYRUN "" "If set, show commands without executing."
 ekko \#_warn_35 sudo node-killer --drain \&\& "Blocks until drained"
@@ -119,6 +119,7 @@ Some other markers generate different, preformatted output.
 
 * *`kv`* Key/Value: prints the first word of the message right-aligned to column 30 (violet) followed by the rest (default colour).
 * *`kv_<NN>`* As above, with the first argument right aligned to column `<NN>`.
+* *`kvs`* Key/Values: Prints a list of keys and values, autoaligning the key names at the longest width.
 * *`export`* prints an export line with the first word of the message. If there is more to the message text, the rest is used as the value. Otherwise, the actual environment variable corresponding to the first work is printed.
 * *`env_not_null`* verifies that the first word of the message is set as an environment variable and prints nothing if true. If false, an error message is printed using the rest of the message text and the return code `$?` is set to `1` (error).
 
