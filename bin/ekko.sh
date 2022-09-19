@@ -222,7 +222,7 @@ function ekko() {
       ekko "$__marker" "" "$__line"
     fi
     ;;
-  kvlist)
+  kvs)
     local __kvs=("$@")
 
     # Pass over all the arguments once to get the longest key (min 5)
