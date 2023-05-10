@@ -81,10 +81,10 @@ function ekko_help_examples() {
   ekko \#_b_37 " " $'local __x3=${__x3:-$1} && shift' "Mandatory but can be supplied by env"
   ekko \#_b_37 " " $'local __x4=${1-X4Value} && shift' Optional
   ekko \#_b_37 " " $'local __x5=${__x5-${1-X5Value}} && shift' "Optional, can be supplied by env"
-  ekko b $'  ekko env_not_null __x1 "X1Value" \
-      && ekko env_not_null __x2 "X2Value" \
-      && ekko env_not_null __x3 "X3Value" \
-      || return $?'
+  ekko b $'  ekko env_not_null __x1 "X1Value" &&\
+      ekko env_not_null __x2 "X2Value" &&\
+      ekko env_not_null __x3 "X3Value" ||\
+      return $?'
   ekko \#_b " " 'At this point, the argument testing succeeded.'
   ekko
 
@@ -230,9 +230,9 @@ function ekko() {
     for ((i = 0; i < ${#__kvs[@]}; i = i + 2)); do
       local __key
       __key="${__kvs[$i]}"
-             if [ ${#__key} -gt $__key_length ]; then
-         __key_length=${#__key}
-       fi
+      if [ ${#__key} -gt $__key_length ]; then
+        __key_length=${#__key}
+      fi
     done
 
     # Print out the arguments according to that longest key
