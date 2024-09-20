@@ -351,7 +351,7 @@ function ekko_simple() {
     echo -e "\e[36m$*\e[0m"
   fi
 }
-[[ "$(type -t ekko)" == 'function' ]] || function ekko() { ekko_simple "$@"; } && export -f ekko
+[[ "$(type -t ekko)" == 'function' ]] || function ekko() { ekko_simple "$@"; } && export -f ekko ekko_simple
 
 #----------------------------------------------------------------------------
 # Helper functions
