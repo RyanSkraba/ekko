@@ -55,6 +55,8 @@ function ekko_help() {
   ekko b ekko $'kv name ekko'
   ekko kv name ekko
   ekko kv column 30 "(default)"
+  ekko b ekko $'kvs name ekko column autosized'
+  ekko kvs name ekko column autosized
   ekko
 
   ekko banner_msg "Execution"
