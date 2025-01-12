@@ -46,6 +46,8 @@ function ekko_help() {
   ekko export MY_ENV_VARIABLE \"a value\"
   ekko comment_b $'ekko export PWD' "Echos current value in env"
   ekko export PWD
+  ekko comment_b $'ekko exports PWD HOME' "Echos current values in env"
+  ekko exports PWD HOME
   ekko b ekko $'kv_12 name ekko'
   ekko kv_12 name ekko
   ekko kv_12 column 12
@@ -290,6 +292,11 @@ function ekko() {
     local __env_val="$*"
     [ -z "$__env_val" ] && __env_val=$(eval echo \$"$__env_var")
     echo -e "\e[37mexport \e[1m\e[95m${__env_var}\e[22m\e[37m=\e[1m\e[36m${__env_val}\e[0m"
+    ;;
+  exports)
+    for __env_var in "$@"; do
+      ekko export "$__env_var"
+    done
     ;;
   popup)
     local __msg="$*"
