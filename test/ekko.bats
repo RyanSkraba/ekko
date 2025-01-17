@@ -293,6 +293,13 @@ function ekko_script_go() {
   assert_line --index 1 "$(echo -e "${__b}${__msg1}${__boff}${__msg1}-------------------------${__reset}")"
 }
 
+@test "Echo exports" {
+  export EKKO_VAR1=var1
+  run ekko export EKKO_VAR1
+  # TODO: \e[37 could be a reset?
+  assert_output "$(echo -e "\e[37mexport ${__b}${__k}EKKO_VAR1${__boff}\e[37m=${__b}${__msg1}var1${__reset}")"
+}
+
 @test "Echo keys and values" {
   run ekko kv Hello kv
   assert_output "$(echo -e "${__k}                         Hello: ${__v}kv${__reset}")"
