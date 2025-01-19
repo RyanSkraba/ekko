@@ -306,6 +306,17 @@ function ekko_script_go() {
   assert_output "$(echo -e "\e[37mexport ${__b}${__k}EKKO_VAR1${__boff}\e[37m=${__b}${__msg1}VAR1${__reset}")"
 }
 
+@test "Echo export lists" {
+  export EKKO_VAR1=var1
+  export EKKO_VAR2="var2 var3"
+  run ekko exports EKKO_VAR1
+  assert_output "$(echo -e "\e[37mexport ${__b}${__k}EKKO_VAR1${__boff}\e[37m=${__b}${__msg1}var1${__reset}")"
+  run ekko exports EKKO_VAR1 EKKO_VAR2
+  assert_equal ${#lines[@]} 2
+  assert_line --index 0 "$(echo -e "\e[37mexport ${__b}${__k}EKKO_VAR1${__boff}\e[37m=${__b}${__msg1}var1${__reset}")"
+  # TODO: Quotes?
+  assert_line --index 1 "$(echo -e "\e[37mexport ${__b}${__k}EKKO_VAR2${__boff}\e[37m=${__b}${__msg1}var2 var3${__reset}")"
+}
 
 @test "Echo keys and values" {
   run ekko kv Hello kv
