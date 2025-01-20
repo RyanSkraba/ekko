@@ -291,7 +291,7 @@ function ekko() {
     local __env_var="$1" && shift
     local __env_val="$*"
     [ -z "$__env_val" ] && __env_val=$(eval echo \$"$__env_var")
-    echo -e "\e[37mexport \e[1m\e[95m${__env_var}\e[22m\e[37m=\e[1m\e[36m${__env_val}\e[0m"
+    echo -e "\e[0mexport \e[1m\e[95m${__env_var}\e[0m=\e[1m\e[36m${__env_val}\e[0m"
     ;;
   exports)
     for __env_var in "$@"; do
