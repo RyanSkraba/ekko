@@ -348,6 +348,45 @@ function ekko() {
 }
 
 #----------------------------------------------------------------------------
+# Prints out some formatted help text for a function, and adds it to the
+# history.
+#
+#    ekko_help_history "Listing files" <<HELP
+#    # Simple file lists
+#    ls
+#    ls -l
+#
+#    #msg2 Finding files recursively
+#    find . -name "*.txt"
+#    HELP
+#
+function ekko_help_history() {
+  local __title=$1 && shift
+  # If a title exists, then print it as a comment
+  if [[ -n "$__title" ]]; then ekko \# "$__title"; fi
+
+  # Read the help text, and print it out using ekko formatting
+  local __help=() __line
+  while IFS= read -r __line; do
+    __help+=("$__line")
+    if [[ "$__line" =~ ^#([a-zA-Z0-9_]+) ]]; then
+      ekko "${BASH_REMATCH[1]}" "# ""${__line:$((${#BASH_REMATCH[0]} + 1))}"
+    elif [[ "$__line" =~ ^# ]]; then
+      ekko \# "${__line:2}"
+    else
+      echo "$__line"
+    fi
+  done
+
+  # Add all of the none comment lines to the history
+  for ((i=${#__help[@]}-1; i>=0; i--)); do
+    if [[ ! "${__help[i]}" =~ ^# && -n "${__help[i]}" ]]; then
+      history -s "${__help[i]}"
+    fi
+  done
+}
+
+#----------------------------------------------------------------------------
 # A simplified, degraded ANSI-coloured echo that can be used as a fallback.
 # For more colours and functionality, install and source ekko.sh from
 # https://github.com/RyanSkraba/ekko/
