@@ -1,13 +1,14 @@
 #!test/bats/bin/bats
 # shellcheck disable=SC2239,SC1091
+
 #############################################################################
 # Unit tests for ekko
 #----------------------------------------------------------------------------
 
-__reset=$'\e[0m'     # Reset to default
-__b=$'\e[1m'         # Bold intensity
-__boff=$'\e[22m'     # Normal intensity, bold off
-__msg1=$'\e[36m'     # Message colours
+__reset=$'\e[0m' # Reset to default
+__b=$'\e[1m'     # Bold intensity
+__boff=$'\e[22m' # Normal intensity, bold off
+__msg1=$'\e[36m' # Message colours
 __msg2=$'\e[94m'
 __msg3=$'\e[95m'
 __error=$'\e[31m'
@@ -16,8 +17,7 @@ __ok=$'\e[32m'
 __exec_bg=$'\e[100m' # Command background colour
 __k=$'\e[95m'        # Keys and values
 __v=$'\e[39m'
-__c=$'\e[90m'        # Comments
-
+__c=$'\e[90m' # Comments
 
 setup() {
   load 'test_helper/bats-support/load'
@@ -51,11 +51,11 @@ function ekko_script_go() {
   while IFS= read -r __cmd; do
     ekko msg "$__cmd"
     if ekko exec "$__cmd"; then
-       ekko ok Success
+      ekko ok Success
     else
-       local __code=$?
-       ekko error Error \( $__code \)
-       return $__code
+      local __code=$?
+      ekko error Error \( $__code \)
+      return $__code
     fi
   done <<<"$(ekko_script_help | ekko_uncolour)"
 }
@@ -211,7 +211,7 @@ function ekko_script_go() {
 
 @test "Echo a banner message with different types of bold" {
   # Pretend there are 25 columns
-  function tput() { 
+  function tput() {
     echo 25
   }
 
@@ -228,7 +228,7 @@ function ekko_script_go() {
 
 @test "Echo a banner message with all the colours" {
   # Pretend there are 25 columns
-  function tput() { 
+  function tput() {
     echo 25
   }
 
@@ -252,7 +252,7 @@ function ekko_script_go() {
 
 @test "Echo a banner message with a long message" {
   # Pretend there are 25 columns
-  function tput() { 
+  function tput() {
     echo 25
   }
 
@@ -294,9 +294,9 @@ function ekko_script_go() {
 }
 
 @test "Echo exports" {
-  export EKKO_VAR1=var1
+  local EKKO_VAR1=var1
   run ekko export EKKO_VAR1
-  assert_output "$(echo -e "${__reset}export ${__b}${__k}EKKO_VAR1${__reset}=${__b}${__msg1}var1${__reset}")"
+  assert_output "$(echo -e "${__reset}export ${__b}${__k}EKKO_VAR1${__reset}=${__b}$__msg1${EKKO_VAR1}${__reset}")"
   run ekko export EKKO_VAR1 ""
   assert_output "$(echo -e "${__reset}export ${__b}${__k}EKKO_VAR1${__reset}=${__b}${__msg1}var1${__reset}")"
   run ekko export EKKO_VAR1 "VAR1"
@@ -304,15 +304,15 @@ function ekko_script_go() {
 }
 
 @test "Echo export lists" {
-  export EKKO_VAR1=var1
-  export EKKO_VAR2="var2 var3"
+  local EKKO_VAR1=var1
+  local EKKO_VAR2="var2 var3"
   run ekko exports EKKO_VAR1
-  assert_output "$(echo -e "${__reset}export ${__b}${__k}EKKO_VAR1${__reset}=${__b}${__msg1}var1${__reset}")"
+  assert_output "$(echo -e "${__reset}export ${__b}${__k}EKKO_VAR1${__reset}=${__b}${__msg1}${EKKO_VAR1}${__reset}")"
   run ekko exports EKKO_VAR1 EKKO_VAR2
   assert_equal ${#lines[@]} 2
   assert_line --index 0 "$(echo -e "${__reset}export ${__b}${__k}EKKO_VAR1${__reset}=${__b}${__msg1}var1${__reset}")"
   # TODO: Quotes?
-  assert_line --index 1 "$(echo -e "${__reset}export ${__b}${__k}EKKO_VAR2${__reset}=${__b}${__msg1}var2 var3${__reset}")"
+  assert_line --index 1 "$(echo -e "${__reset}export ${__b}${__k}EKKO_VAR2${__reset}=${__b}${__msg1}${EKKO_VAR2}${__reset}")"
 }
 
 @test "Echo keys and values" {
@@ -370,7 +370,7 @@ function ekko_script_go() {
   assert_output "$(echo -e "${__b}${__msg1}Hello${__boff}${__msg1} world${__reset} ${__b}${__c}# COMMENT${__reset}")"
   run ekko \#_msg Hello world \#_msg
   assert_output "$(echo -e "${__b}${__msg1}Hello${__boff}${__msg1} world${__reset} ${__b}${__c}# #_msg${__reset}")"
-  
+
   # Ignore the column parameter when it's smaller than the formatted message
   run ekko \#_msg_0 Hello world \#_msg_0
   assert_output "$(echo -e "${__b}${__msg1}Hello${__boff}${__msg1} world${__reset} ${__b}${__c}# #_msg_0${__reset}")"
@@ -381,7 +381,7 @@ function ekko_script_go() {
   run ekko \#_msg_12 Hello world \#_msg_12
   assert_output "$(echo -e "${__b}${__msg1}Hello${__boff}${__msg1} world${__reset} ${__b}${__c}# #_msg_12${__reset}")"
 
-  # Also ignore when the column parameter is already aligned 
+  # Also ignore when the column parameter is already aligned
   # (Hello world is 12 characters plus the space)
   run ekko \#_msg_13 Hello world \#_msg_13
   assert_output "$(echo -e "${__b}${__msg1}Hello${__boff}${__msg1} world${__reset} ${__b}${__c}# #_msg_13${__reset}")"
@@ -396,13 +396,13 @@ function ekko_script_go() {
 @test "Check help example 'Reading arguments' missing mandatory arguments" {
   run ekko_help_reading_arguments_example
   assert_failure
-  assert_output  "$(echo -e "${__b}${__error}Missing argument:${__boff}${__error} <__x1> (e.g. X1Value)${__reset}")"
+  assert_output "$(echo -e "${__b}${__error}Missing argument:${__boff}${__error} <__x1> (e.g. X1Value)${__reset}")"
   run ekko_help_reading_arguments_example 1
   assert_failure
-  assert_output  "$(echo -e "${__b}${__error}Missing argument:${__boff}${__error} <__x2> (e.g. X2Value)${__reset}")"
+  assert_output "$(echo -e "${__b}${__error}Missing argument:${__boff}${__error} <__x2> (e.g. X2Value)${__reset}")"
   run ekko_help_reading_arguments_example 1 2
   assert_failure
-  assert_output  "$(echo -e "${__b}${__error}Missing argument:${__boff}${__error} <__x3> (e.g. X3Value)${__reset}")"
+  assert_output "$(echo -e "${__b}${__error}Missing argument:${__boff}${__error} <__x3> (e.g. X3Value)${__reset}")"
 }
 
 @test "Check help example 'Reading arguments' optional arguments" {
