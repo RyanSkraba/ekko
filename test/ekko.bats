@@ -358,6 +358,21 @@ function ekko_script_go() {
   assert_line --index 1 "$(echo -e "${__k}       ${__v}c${__reset}")"
 }
 
+@test "Echo a block of text with a title" {
+  run ekko_help_history "Title" <<HELP
+line1
+line2
+line3
+#msg line4
+HELP
+  assert_equal ${#lines[@]} 5
+  assert_line --index 0 "$(echo -e "${__b}${__c}# Title${__reset}")"
+  assert_line --index 1 "line1"
+  assert_line --index 2 "line2"
+  assert_line --index 3 "line3"
+  assert_line --index 4 "$(ekko msg "# line4")"
+}
+
 @test "Echo test comments" {
   run ekko comment Hello comment
   assert_output "$(echo -e "${__b}${__c}# Hello comment${__reset}")"
