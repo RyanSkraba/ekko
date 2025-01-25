@@ -371,7 +371,22 @@ HELP
   assert_line --index 1 "line1"
   assert_line --index 2 "line2"
   assert_line --index 3 "line3"
+  # TODO: It looks like the empty line is erased for unit tests?
   assert_line --index 4 "$(ekko msg "# line4")"
+}
+
+@test "$(ekko b history_help): Echo a block of text with out title" {
+  run ekko history_help <<HELP
+#ekko msg # line4
+line1
+line2
+line3
+HELP
+  assert_equal ${#lines[@]} 4
+  assert_line --index 0 "$(ekko msg "# line4")"
+  assert_line --index 1 "line1"
+  assert_line --index 2 "line2"
+  assert_line --index 3 "line3"
 }
 
 @test "Echo test comments" {
