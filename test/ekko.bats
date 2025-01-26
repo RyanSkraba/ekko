@@ -149,7 +149,7 @@ function ekko_script_go() {
   assert_output "$(echo -e "${__b}Hello world${__reset}")"
 }
 
-@test "Execute a command with quotes" {
+@test "$(ekko b exec): Execute a command with quotes" {
   run ekko exec echo XX1
   assert_equal ${#lines[@]} 3
   assert_line --index 0 "$(echo -e "${__exec_bg}echo XX1${__reset}")"
@@ -179,7 +179,7 @@ function ekko_script_go() {
   assert_line --index 2 --regexp $'^..95mTIME: ..39m[0-9]+ \([0-9:\.]+\) echo "XX4"....$'
 }
 
-@test "Execute a command with quotes and spaces" {
+@test "$(ekko b exec): Execute a command with quotes and spaces" {
   run ekko exec echo X X1
   assert_equal ${#lines[@]} 3
   assert_line --index 0 "$(echo -e "${__exec_bg}echo X X1${__reset}")"
@@ -209,7 +209,7 @@ function ekko_script_go() {
   assert_line --index 2 --regexp $'^..95mTIME: ..39m[0-9]+ \([0-9:\.]+\) echo "X  X4"....$'
 }
 
-@test "Echo a banner message with different types of bold" {
+@test "$(ekko b banner_msg): Echo a banner message with different types of bold" {
   # Pretend there are 25 columns
   function tput() {
     echo 25
@@ -226,7 +226,7 @@ function ekko_script_go() {
   assert_output "$(echo -e "${__b}${__msg1}${__boff}${__msg1}-------------------------${__reset}")"
 }
 
-@test "Echo a banner message with all the colours" {
+@test "$(ekko b banner_\*): Echo a banner message with all the colours" {
   # Pretend there are 25 columns
   function tput() {
     echo 25
@@ -250,7 +250,7 @@ function ekko_script_go() {
   assert_output "$(echo -e "${__b}Hello${__boff} world -------------${__reset}")"
 }
 
-@test "Echo a banner message with a long message" {
+@test "$(ekko b banner_msg): Echo a banner message with a long message" {
   # Pretend there are 25 columns
   function tput() {
     echo 25
@@ -293,7 +293,7 @@ function ekko_script_go() {
   assert_line --index 1 "$(echo -e "${__b}${__msg1}${__boff}${__msg1}-------------------------${__reset}")"
 }
 
-@test "Echo exports" {
+@test "$(ekko b export): Echo export environment variables" {
   local EKKO_VAR1=var1
   run ekko export EKKO_VAR1
   assert_output "$(echo -e "${__reset}export ${__b}${__k}EKKO_VAR1${__reset}=${__b}$__msg1${EKKO_VAR1}${__reset}")"
@@ -303,7 +303,7 @@ function ekko_script_go() {
   assert_output "$(echo -e "${__reset}export ${__b}${__k}EKKO_VAR1${__reset}=${__b}${__msg1}VAR1${__reset}")"
 }
 
-@test "Echo export lists" {
+@test "$(ekko b exports): Echo export lists of environment variables" {
   local EKKO_VAR1=var1
   local EKKO_VAR2="var2 var3"
   run ekko exports EKKO_VAR1
@@ -315,7 +315,7 @@ function ekko_script_go() {
   assert_line --index 1 "$(echo -e "${__reset}export ${__b}${__k}EKKO_VAR2${__reset}=${__b}${__msg1}${EKKO_VAR2}${__reset}")"
 }
 
-@test "Echo keys and values" {
+@test "$(ekko b kv): Echo keys and values" {
   run ekko kv Hello kv
   assert_output "$(echo -e "${__k}                         Hello: ${__v}kv${__reset}")"
   run ekko kv_0 Hello kv_0
@@ -336,7 +336,7 @@ function ekko_script_go() {
   assert_output "$(echo -e "${__k}                                ${__v}kv${__reset}")"
 }
 
-@test "Echo keys and values lists" {
+@test "$(ekko b kvs): Echo keys and values lists" {
   run ekko kvs Hello kvs
   assert_output "$(echo -e "${__k}Hello: ${__v}kvs${__reset}")"
   run ekko kvs Hello kvs "How are" you
@@ -389,14 +389,14 @@ HELP
   assert_line --index 3 "line3"
 }
 
-@test "Echo test comments" {
+@test "$(ekko b comment): Echo test comments" {
   run ekko comment Hello comment
   assert_output "$(echo -e "${__b}${__c}# Hello comment${__reset}")"
   run ekko \# Hello \#
   assert_output "$(echo -e "${__b}${__c}# Hello #${__reset}")"
 }
 
-@test "Echo test comments on formatted messages" {
+@test "$(ekko b comment_*): Echo test comments on formatted messages" {
   run ekko comment_msg Hello world COMMENT
   assert_output "$(echo -e "${__b}${__msg1}Hello${__boff}${__msg1} world${__reset} ${__b}${__c}# COMMENT${__reset}")"
   run ekko \#_msg Hello world \#_msg
