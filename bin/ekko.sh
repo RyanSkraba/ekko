@@ -294,6 +294,7 @@ function ekko() {
     echo -e "\e[0mexport \e[1m\e[95m${__env_var}\e[0m=\e[1m\e[36m${__env_val}\e[0m"
     ;;
   exports)
+    local __env_var
     for __env_var in "$@"; do
       ekko export "$__env_var"
     done
