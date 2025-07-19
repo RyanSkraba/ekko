@@ -299,7 +299,7 @@ function ekko() {
       ekko export "$__env_var"
     done
     ;;
-  history_help)
+  history_help | help)
     local __title=$1 && shift
     # If a title exists, then print it as a comment
     if [[ -n "$__title" ]]; then ekko \# "$__title"; fi
@@ -318,11 +318,13 @@ function ekko() {
     done
 
     # Add all of the non-comment lines to the history
-    for ((i = ${#__help[@]} - 1; i >= 0; i--)); do
-      if [[ ! "${__help[i]}" =~ ^# && -n "${__help[i]}" ]]; then
-        history -s "${__help[i]}"
-      fi
-    done
+    if [[ $__marker = "history_help" ]]; then
+      for ((i = ${#__help[@]} - 1; i >= 0; i--)); do
+        if [[ ! "${__help[i]}" =~ ^# && -n "${__help[i]}" ]]; then
+          history -s "${__help[i]}"
+        fi
+      done
+    fi
     ;;
   popup)
     local __msg="$*"
