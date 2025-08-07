@@ -310,7 +310,8 @@ function ekko() {
     while IFS= read -r __line; do
       __help+=("$__line")
       if [[ "$__line" =~ ^#ekko[[:space:]]+([^[:space:]]+)[[:space:]]*(.*) ]]; then
-        ekko "${BASH_REMATCH[1]}" "${BASH_REMATCH[2]}"
+        # shellcheck disable=SC2086
+        ekko "${BASH_REMATCH[1]}" ${BASH_REMATCH[2]}
       elif [[ "$__line" =~ ^# ]]; then
         ekko \# "${__line:2}"
       else
