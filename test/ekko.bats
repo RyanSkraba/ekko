@@ -362,6 +362,7 @@ function ekko_script_go() {
   run ekko history_help "Title" <<HELP
 line1
 line2
+### COMMENT
 line3
 
 #ekko msg # line4
@@ -380,6 +381,7 @@ HELP
 #ekko msg # line4
 line1
 line2
+### COMMENT
 line3
 HELP
   assert_equal ${#lines[@]} 4
@@ -393,6 +395,7 @@ HELP
   run ekko help "Title" <<HELP
 line1
 line2
+### COMMENT
 line3
 
 #ekko msg # line4
@@ -411,6 +414,7 @@ HELP
 #ekko msg # line4
 line1
 line2
+### COMMENT
 line3
 HELP
   assert_equal ${#lines[@]} 4

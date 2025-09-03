@@ -312,6 +312,8 @@ function ekko() {
       if [[ "$__line" =~ ^#ekko[[:space:]]+([^[:space:]]+)[[:space:]]*(.*) ]]; then
         # shellcheck disable=SC2086
         ekko "${BASH_REMATCH[1]}" ${BASH_REMATCH[2]}
+      elif [[ "$__line" =~ ^### ]]; then
+        : # Ignore lines with a triple #
       elif [[ "$__line" =~ ^# ]]; then
         ekko \# "${__line:2}"
       else
