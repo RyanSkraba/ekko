@@ -21,7 +21,7 @@ Learn `ekko` in 10 seconds or less
 
 if you're writing stuff like this in your scripts:
 
-<!--boring echo-->
+<!-- boring_echo -->
 
 ```bash
 echo ATTENTION!! shutting down nodes may cause data loss -----
@@ -40,7 +40,7 @@ echo "  sudo" node-killer --force \# Kills all nodes permanently
 
 Just start writing stuff like this instead!  Replace `echo` with `ekko <MARKER>` to describe how to colour your text.
 
-<!--thrilling_ekko-->
+<!-- thrilling_ekko -->
 
 ```bash
 ekko banner_error "ATTENTION" shutting down nodes may cause data loss
