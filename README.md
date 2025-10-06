@@ -160,7 +160,7 @@ ekko no-exec find /tmp
 
 ![ekko exec examples](./doc/ekko_help_4_exec.svg)
 
-If you are on a system with the `notify-send` command [gnome](like https://developer.gnome.org/notification-spec/), you can execute two types of popups.
+If you are on a system with the `notify-send` command like [gnome](https://developer.gnome.org/notification-spec/), you can execute two types of popups.
 
 * *`popup`* Sends the message to the notification center directly.
 * *`remind`* Starts a background process that sleeps for `N` seconds before displaying. If the argument is non-numeric, try to parse it into seconds using the linux `date` command.
